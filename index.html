@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lazarus Band Builder</title>
-  <link rel="stylesheet" href="styles.css?v=20260913-3" />
+  <link rel="stylesheet" href="styles.css?v=20260914-1" />
 </head>
 <body>
   <header class="hero">
@@ -76,18 +76,18 @@
 
       <div class="stats"></div>
 
-      <div class="grid two compact">
+      <div class="grid compact member-profile-row">
         <label>Perfil
           <select class="member-profile"></select>
         </label>
+      </div>
+
+      <div class="grid two compact member-traits-row">
         <label>Dote
           <select class="member-trait"></select>
         </label>
         <label>Defecto
           <select class="member-flaw"></select>
-        </label>
-        <label>Protección
-          <select class="member-armor"></select>
         </label>
       </div>
 
@@ -100,6 +100,23 @@
           <button type="button" class="add-weapon small-action">+ Arma</button>
         </div>
         <div class="weapon-list loadout-list"></div>
+      </div>
+
+      <div class="loadout-block protection-block">
+        <div class="loadout-head">
+          <div>
+            <strong>Protección</strong>
+            <span>Combina indumentaria y escudo cuando estén disponibles para la banda.</span>
+          </div>
+        </div>
+        <div class="grid two compact protection-grid">
+          <label>Indumentaria
+            <select class="member-armor"></select>
+          </label>
+          <label>Escudo
+            <select class="member-shield"></select>
+          </label>
+        </div>
       </div>
 
       <div class="loadout-block">
@@ -120,5 +137,6 @@
   <script src="data.js?v=20260913-3"></script>
   <script src="band-guard.js?v=20260913-3"></script>
   <script src="app.js?v=20260913-3"></script>
+  <script src="protection-layout.js?v=20260914-1"></script>
 </body>
 </html>
