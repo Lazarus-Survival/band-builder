@@ -62,6 +62,8 @@ button.remove-loadout { width: 38px; height: 38px; padding: 0; align-self: end; 
 .stat b { display: block; font-size: 1rem; }
 .stat span { color: var(--muted); font-size: .7rem; }
 .compact { margin-top: 12px; }
+.member-profile-row { grid-template-columns: minmax(0, 1fr); }
+.member-profile-row label { max-width: calc(50% - 7px); }
 
 .loadout-block { margin-top: 14px; padding: 13px; border: 1px solid #394333; border-radius: 12px; background: rgba(0,0,0,.10); }
 .loadout-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 10px; }
@@ -71,6 +73,7 @@ button.remove-loadout { width: 38px; height: 38px; padding: 0; align-self: end; 
 .loadout-row { display: grid; gap: 9px; align-items: end; }
 .weapon-row { grid-template-columns: minmax(0, 1fr) minmax(180px, .75fr) auto; }
 .gear-row { grid-template-columns: minmax(0, 1fr) auto; }
+.protection-grid { margin-top: 0; }
 .ammo-input::placeholder { color: #737a6e; }
 .ammo-note { color: var(--accent-2); }
 
@@ -93,8 +96,11 @@ button.remove-loadout { width: 38px; height: 38px; padding: 0; align-self: end; 
 .sheet-stats { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; margin: 8px 0; font-size: .72rem; }
 .sheet-stats div { border: 1px solid #9a9b92; padding: 4px 2px; text-align: center; }
 .sheet-stats b { display: block; font-size: .86rem; }
-.sheet-details { font-size: .78rem; line-height: 1.4; }
+.sheet-details { font-size: .78rem; line-height: 1.4; display: grid; gap: 7px; }
 .sheet-details p { margin: 4px 0; }
+.sheet-section { border: 1px solid #c4c2b8; border-radius: 6px; padding: 7px 8px; background: rgba(255,255,255,.28); }
+.sheet-section-title { font-size: .7rem; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; color: #55584f; margin-bottom: 3px; }
+.sheet-empty { color: #8b8c85; }
 .sheet-ammo { color: #4f514b; }
 
 @media (max-width: 980px) {
@@ -105,6 +111,7 @@ button.remove-loadout { width: 38px; height: 38px; padding: 0; align-self: end; 
   .hero, .layout { padding-left: 14px; padding-right: 14px; }
   .hero { align-items: start; flex-direction: column; }
   .grid.two { grid-template-columns: 1fr; }
+  .member-profile-row label { max-width: none; }
   .stats { grid-template-columns: repeat(4,1fr); }
   .member-head { flex-direction: column; }
   .weapon-row { grid-template-columns: 1fr auto; }
