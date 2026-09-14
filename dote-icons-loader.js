@@ -5,7 +5,7 @@
     if(typeof pictogram==="function" && typeof svgWrap==="function"){
       clearInterval(timer);
       const dotes=document.createElement("script");
-      dotes.src="dote-icons.js?v=20260914-3";
+      dotes.src="dote-icons.js?v=20260914-4";
       dotes.onload=()=>{
         const defectos=document.createElement("script");
         defectos.src="defecto-icons.js?v=20260914-1";
