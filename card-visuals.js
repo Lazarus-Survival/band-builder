@@ -77,12 +77,11 @@ function visualSection(title,content,klass=""){
 
 sheetMember=function(member,index){
   const stats=effectiveStats(member);
-  const traits=[];
-  if(member.trait)traits.push(fullRow(member.trait,LAZARUS_DATA.traits[member.trait]?.text,`<span class="visual-points">${formatPoints(repeatedTraitCost(member))} pts</span>`));
-  if(member.flaw)traits.push(fullRow(member.flaw,LAZARUS_DATA.flaws[member.flaw]?.text,`<span class="visual-points negative">-${formatPoints(repeatedFlawValue(member))} pts</span>`));
+  const dote=member.trait?fullRow(member.trait,LAZARUS_DATA.traits[member.trait]?.text):"";
+  const defecto=member.flaw?fullRow(member.flaw,LAZARUS_DATA.flaws[member.flaw]?.text):"";
   const weapons=member.weapons.filter(w=>w.name).map(weaponVisual).join("");
   const protection=[]; if(member.armor)protection.push(protectionVisual("Indumentaria",member.armor)); if(member.shield)protection.push(protectionVisual("Escudo",member.shield));
   const gear=member.gear.filter(Boolean).map(item=>fullRow(item,LAZARUS_DATA.gearText[item])).join("");
-  return `<article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(member.profile)}</span></div><div class="character-points"><b>${formatPoints(memberCost(member))}</b><span>PUNTOS</span></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Dote / Defecto",traits.join(""))}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article>`;
+  return `<article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(member.profile)}</span></div><div class="character-points"><b>${formatPoints(memberCost(member))}</b><span>PUNTOS</span></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Dote",dote)}${visualSection("Defecto",defecto)}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article>`;
 };
 renderSummary();
