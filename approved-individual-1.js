@@ -1,1 +1,0 @@
-window.LAZARUS_APPROVED_ICONS=Object.assign(window.LAZARUS_APPROVED_ICONS||{},{});
