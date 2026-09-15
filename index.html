@@ -7,14 +7,7 @@
   <link rel="stylesheet" href="styles.css?v=20260914-1" />
 </head>
 <body>
-  <header class="hero">
-    <div>
-      <p class="eyebrow">LAZARUS</p>
-      <h1>Band Builder</h1>
-      <p class="subtitle">Crea, valida y prepara la ficha de tu banda.</p>
-    </div>
-    <button id="printButton" class="secondary">Imprimir ficha</button>
-  </header>
+  <header class="hero"><div><p class="eyebrow">LAZARUS</p><h1>Band Builder</h1><p class="subtitle">Crea, valida y prepara la ficha de tu banda.</p></div><button id="printButton" class="secondary">Imprimir ficha</button></header>
   <main class="layout">
     <section class="panel builder">
       <div class="section-title"><div><p class="step">1. Configura la banda</p><h2>Datos generales</h2></div><div id="pointsBadge" class="points-badge">0 / 250 pts</div></div>
@@ -24,22 +17,17 @@
     </section>
     <aside class="panel sheet-wrap"><div class="section-title"><div><p class="step">3. Ficha final</p><h2>Resumen para jugar</h2></div></div><div id="sheet" class="sheet"></div></aside>
   </main>
-  <template id="memberTemplate">
-    <article class="member-card">
-      <div class="member-head"><div><input class="member-name" placeholder="Nombre del personaje" /><div class="member-meta"></div></div><div class="member-actions"><strong class="member-cost"></strong><button class="remove-member danger">Eliminar</button></div></div>
-      <div class="stats"></div>
-      <div class="grid compact member-profile-row"><label>Perfil<select class="member-profile"></select></label></div>
-      <div class="grid two compact member-traits-row"><label>Dote<select class="member-trait"></select></label><label>Defecto<select class="member-flaw"></select></label></div>
-      <div class="loadout-block"><div class="loadout-head"><div><strong>Armas</strong><span>Cada arma puede llevar su propia munición.</span></div><button type="button" class="add-weapon small-action">+ Arma</button></div><div class="weapon-list loadout-list"></div></div>
-      <div class="loadout-block protection-block"><div class="loadout-head"><div><strong>Protección</strong><span>Combina indumentaria y escudo cuando estén disponibles para la banda.</span></div></div><div class="grid two compact protection-grid"><label>Indumentaria<select class="member-armor"></select></label><label>Escudo<select class="member-shield"></select></label></div></div>
-      <div class="loadout-block"><div class="loadout-head"><div><strong>Equipo</strong><span>Añade tantos elementos como necesites.</span></div><button type="button" class="add-gear small-action">+ Equipo</button></div><div class="gear-list loadout-list"></div></div>
-      <div class="rule-details"></div>
-    </article>
-  </template>
+  <template id="memberTemplate"><article class="member-card"><div class="member-head"><div><input class="member-name" placeholder="Nombre del personaje" /><div class="member-meta"></div></div><div class="member-actions"><strong class="member-cost"></strong><button class="remove-member danger">Eliminar</button></div></div><div class="stats"></div><div class="grid compact member-profile-row"><label>Perfil<select class="member-profile"></select></label></div><div class="grid two compact member-traits-row"><label>Dote<select class="member-trait"></select></label><label>Defecto<select class="member-flaw"></select></label></div><div class="loadout-block"><div class="loadout-head"><div><strong>Armas</strong><span>Cada arma puede llevar su propia munición.</span></div><button type="button" class="add-weapon small-action">+ Arma</button></div><div class="weapon-list loadout-list"></div></div><div class="loadout-block protection-block"><div class="loadout-head"><div><strong>Protección</strong><span>Combina indumentaria y escudo cuando estén disponibles para la banda.</span></div></div><div class="grid two compact protection-grid"><label>Indumentaria<select class="member-armor"></select></label><label>Escudo<select class="member-shield"></select></label></div></div><div class="loadout-block"><div class="loadout-head"><div><strong>Equipo</strong><span>Añade tantos elementos como necesites.</span></div><button type="button" class="add-gear small-action">+ Equipo</button></div><div class="gear-list loadout-list"></div></div><div class="rule-details"></div></article></template>
   <script src="data.js?v=20260913-3"></script>
   <script src="band-guard.js?v=20260913-3"></script>
   <script src="app.js?v=20260913-3"></script>
   <script src="protection-layout.js?v=20260914-1"></script>
-  <script src="icon-chain-fix.js?v=20260914-4"></script>
+  <script src="approved-icons-part1.js?v=20260915-1"></script>
+  <script src="approved-icons-part2.js?v=20260915-1"></script>
+  <script src="approved-icons-part3.js?v=20260915-1"></script>
+  <script src="approved-icons-part4.js?v=20260915-1"></script>
+  <script src="approved-icons-part5.js?v=20260915-1"></script>
+  <script src="approved-icons-part6.js?v=20260915-1"></script>
+  <script src="icon-chain-fix.js?v=20260915-1"></script>
 </body>
 </html>
