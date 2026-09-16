@@ -62,8 +62,8 @@ function fullRow(name,description,extra=""){
 }
 
 function weaponVisual(weapon){
-  const desc=LAZARUS_DATA.weapons[weapon.name]?.text||""; const p=parseWeaponProfile(weapon.name); const ammo=ammoDescription(weapon);
-  return `<div class="visual-item-card"><div class="visual-item-head">${iconBadge(weapon.name,desc)}<div><b>${escapeHtml(weapon.name)}</b>${ammo?`<span>${escapeHtml(ammo.replace(/^Munición:\s*/,""))}</span>`:""}</div></div><div class="visual-stat-table weapon-stats"><div><span>Alcance</span><b>${escapeHtml(p.range)}</b></div><div><span>Bono</span><b>${escapeHtml(p.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(p.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(p.dice)}</b></div><div class="special"><span>Especial</span><b>${escapeHtml(p.special)}</b></div></div></div>`;
+  const desc=LAZARUS_DATA.weapons[weapon.name]?.text||""; const p=parseWeaponProfile(weapon.name); const ammo=ammoCount(weapon);
+  return `<div class="visual-item-card"><div class="visual-item-head">${iconBadge(weapon.name,desc)}<div><b>${escapeHtml(weapon.name)}</b>${ammo?`<span>${ammo} proyectiles</span>`:""}</div></div><div class="visual-stat-table weapon-stats"><div><span>Alcance</span><b>${escapeHtml(p.range)}</b></div><div><span>Bono</span><b>${escapeHtml(p.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(p.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(p.dice)}</b></div><div class="special"><span>Especial</span><b>${escapeHtml(p.special)}</b></div></div>${ammo?`<div class="ammo-counter" role="img" aria-label="${ammo} proyectiles">${'<svg class="ammo-bullet" viewBox="0 0 12 28" aria-hidden="true"><path d="M3 10V7Q3 3 6 1Q9 3 9 7V10M2 10H10V24H2ZM1 24H11V27H1Z"/></svg>'.repeat(ammo)}</div>`:""}</div>`;
 }
 
 function protectionVisual(label,name){
