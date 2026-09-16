@@ -84,7 +84,7 @@ renderMembers = function() {
     card.querySelector(".member-flaw").innerHTML=options(band().flaws,member.flaw,"Sin defecto");
     card.querySelector(".member-armor").innerHTML=protectionOptions("armor",member.armor);
     card.querySelector(".member-shield").innerHTML=protectionOptions("shield",member.shield);
-    for(const [key,prefix] of [["trait","C ×"],["flaw","V ÷"]]){
+    for(const [key,prefix] of [["trait","×"],["flaw","÷"]]){
       const repeats=member[key]?state.members.slice(0,index).filter(m=>m[key]===member[key]).length:0;
       card.querySelector('.repeat-'+key).textContent=repeats?prefix+(2**repeats):"";
     }
@@ -128,6 +128,6 @@ render();
   css.href="card-visuals.css?v=20260916-8";
   document.head.appendChild(css);
   const script=document.createElement("script");
-  script.src="card-visuals.js?v=20260916-8";
+  script.src="card-visuals.js?v=20260916-9";
   document.body.appendChild(script);
 })();

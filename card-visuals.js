@@ -104,11 +104,11 @@ function costBreakdownSheet(){
     if(member.trait){
       const repeats=state.members.slice(0,index).filter(m=>m.trait===member.trait).length;
       const multiplier=2**repeats;
-      add('Dote · '+member.trait+(repeats?' (C ×'+multiplier+')':''),repeatedTraitCost(member));
+      add('Dote · '+member.trait+(repeats?' (×'+multiplier+')':''),repeatedTraitCost(member));
     }
     if(member.flaw){
       const repeats=state.members.slice(0,index).filter(m=>m.flaw===member.flaw).length;
-      add('Defecto · '+member.flaw+(repeats?' (V ÷'+(2**repeats)+')':''),-repeatedFlawValue(member));
+      add('Defecto · '+member.flaw+(repeats?' (÷'+(2**repeats)+')':''),-repeatedFlawValue(member));
     }
     for(const weapon of member.weapons.filter(w=>w.name)){
       add('Arma · '+weapon.name,b.weapons[weapon.name]||0);
