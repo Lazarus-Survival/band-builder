@@ -76,7 +76,7 @@ function vitalityCounters(stats){
   const strength='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 21 7v10l-9 5-9-5V7Z"/><path d="M5 12h4l2-4 3 8 2-4h3"/></svg>';
   return '<div class="vitality-counters">'+[["Vida",stats[6],life],["Resistencia (PR)",stats[5],strength]].map(([label,value,icon])=>{
     const count=Number.isFinite(value)?Math.max(0,Math.floor(value)):0;
-    return '<div class="vitality-column"><b>'+label+'</b><div class="vitality-icons" role="img" aria-label="'+label+': '+escapeHtml(value??'—')+'">'+(count?icon.repeat(count):escapeHtml(value??'—'))+'</div></div>';
+    return '<div class="vitality-column"><div class="vitality-icons" role="img" aria-label="'+label+': '+escapeHtml(value??'—')+'">'+(count?icon.repeat(count):escapeHtml(value??'—'))+'</div></div>';
   }).join('')+'</div>';
 }
 
