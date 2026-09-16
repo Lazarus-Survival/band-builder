@@ -95,4 +95,35 @@ sheetMember=function(member,index){
   const gear=member.gear.filter(Boolean).map(item=>fullRow(item,LAZARUS_DATA.gearText[item])).join("");
   return `<article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(member.profile)}</span></div><div class="character-points"><b>${formatPoints(memberCost(member))}</b><span>PUNTOS</span></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>'))}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article>`;
 };
+function costBreakdownSheet(){
+  const b=band();
+  const members=state.members.map((member,index)=>{
+    const rows=[];
+    const add=(label,cost)=>rows.push('<tr><td>'+escapeHtml(label)+'</td><td>'+String(cost)+' pts</td></tr>');
+    add('Perfil · '+member.profile,b.profiles[member.profile]?.cost||0);
+    if(member.trait){
+      const repeats=state.members.slice(0,index).filter(m=>m.trait===member.trait).length;
+      const multiplier=2**repeats;
+      add('Dote · '+member.trait+(repeats?' ('+String(b.traits[member.trait]||0)+' ×'+multiplier+')':''),repeatedTraitCost(member));
+    }
+    if(member.flaw){
+      const repeats=state.members.slice(0,index).filter(m=>m.flaw===member.flaw).length;
+      add('Defecto · '+member.flaw+(repeats?' (valor ÷'+(2**repeats)+')':''),-repeatedFlawValue(member));
+    }
+    for(const weapon of member.weapons.filter(w=>w.name)){
+      add('Arma · '+weapon.name,b.weapons[weapon.name]||0);
+      if(ammoRule(weapon.name))add('Munición · '+weapon.name+' · '+ammoCount(weapon)+' proyectiles'+(ammoCost(weapon)?' (coste adicional)':' (incluidos)'),ammoCost(weapon));
+    }
+    if(member.armor)add('Indumentaria · '+member.armor,b.armor[member.armor]||0);
+    if(member.shield)add('Escudo · '+member.shield,b.armor[member.shield]||0);
+    for(const item of member.gear.filter(Boolean))add('Equipo · '+item,b.gear[item]||0);
+    return '<article class="cost-member"><h4>'+escapeHtml(member.name||member.profile+' '+(index+1))+'</h4><table><thead><tr><th>Concepto</th><th>Coste</th></tr></thead><tbody>'+rows.join('')+'</tbody><tfoot><tr><th>Total del miembro</th><td>'+String(memberCost(member))+' pts</td></tr></tfoot></table></article>';
+  }).join('');
+  return '<section class="cost-breakdown"><h3>Desglose de costes</h3><p>'+escapeHtml(state.name||'Banda sin nombre')+' · '+escapeHtml(b.name)+'</p>'+members+'<p class="cost-grand-total">Total de la banda: '+String(totalCost())+' / '+String(state.limit)+' pts</p></section>';
+}
+const renderSummaryBeforeCosts=renderSummary;
+renderSummary=function(){
+  renderSummaryBeforeCosts();
+  if(state.members.length)el.sheet.insertAdjacentHTML('beforeend',costBreakdownSheet());
+};
 renderSummary();
