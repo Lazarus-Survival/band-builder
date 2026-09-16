@@ -124,6 +124,6 @@ render();
   css.href="card-visuals.css?v=20260916-3";
   document.head.appendChild(css);
   const script=document.createElement("script");
-  script.src="card-visuals.js?v=20260916-3";
+  script.src="card-visuals.js?v=20260916-6";
   document.body.appendChild(script);
 })();
