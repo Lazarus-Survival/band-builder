@@ -68,7 +68,7 @@ function weaponVisual(weapon){
 
 function protectionVisual(label,name){
   const desc=LAZARUS_DATA.armorText[name]||""; const p=parseProtectionProfile(name);
-  return `<div class="visual-item-card"><div class="visual-item-head">${iconBadge(name,desc)}<div><span class="visual-kicker">${label}</span><b>${escapeHtml(name)}</b></div></div><div class="visual-stat-table protection-stats"><div><span>Fuego</span><b>${p.fire}</b></div><div><span>CC</span><b>${p.cc}</b></div><div><span>Mordiscos</span><b>${p.bites}</b></div><div class="special"><span>Especial</span><b>${escapeHtml(p.special)}</b></div></div></div>`;
+  return `<div class="visual-item-card"><div class="visual-item-head">${iconBadge(name,desc)}<div><span class="visual-kicker">${label}</span><b>${escapeHtml(name)}</b></div></div><div class="visual-stat-table protection-stats"><div><span>Fuego</span><b>${p.fire}</b></div><div><span>CC</span><b>${p.cc}</b></div><div><span>Mordiscos</span><b>${p.bites}</b></div></div></div>`;
 }
 
 function visualSection(title,content,klass=""){
