@@ -72,9 +72,9 @@ function protectionVisual(label,name){
 }
 
 function vitalityCounters(stats){
-  const heart='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21 3.5 12.5C-2 7 5 0 12 7c7-7 14 0 8.5 5.5Z"/></svg>';
+  const life='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 21 7v10l-9 5-9-5V7Z"/><path d="M5 12h4l2-4 3 8 2-4h3"/></svg>';
   const strength='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 9h3v6H1zM4 5h4v14H4zM8 10h8v4H8zM16 5h4v14h-4zM20 9h3v6h-3z"/></svg>';
-  return '<div class="vitality-counters">'+[["Vida",stats[6],heart],["Resistencia (PR)",stats[5],strength]].map(([label,value,icon])=>{
+  return '<div class="vitality-counters">'+[["Vida",stats[6],life],["Resistencia (PR)",stats[5],strength]].map(([label,value,icon])=>{
     const count=Number.isFinite(value)?Math.max(0,Math.floor(value)):0;
     return '<div class="vitality-column"><b>'+label+'</b><div class="vitality-icons" role="img" aria-label="'+label+': '+escapeHtml(value??'—')+'">'+(count?icon.repeat(count):escapeHtml(value??'—'))+'</div></div>';
   }).join('')+'</div>';
