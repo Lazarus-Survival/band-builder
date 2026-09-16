@@ -127,3 +127,5 @@ button.remove-loadout { width: 38px; height: 38px; padding: 0; align-self: end; 
   .panel, .sheet-wrap { border: 0; box-shadow: none; padding: 0; margin: 0; }
   .sheet { border-radius: 0; padding: 12mm; min-height: 0; }
 }
+
+.grid.two.member-traits-row { grid-template-columns: repeat(2, minmax(0,1fr)); margin-top: 0; }

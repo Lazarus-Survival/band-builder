@@ -19,4 +19,4 @@
 @media(max-width:620px){.visual-attributes{grid-template-columns:repeat(4,1fr)}.visual-attributes div{border-bottom:1px solid #aaa69a}.weapon-stats{grid-template-columns:repeat(2,1fr)}.visual-stat-table .special{grid-column:1/-1;border-top:1px solid #a6a298}.character-card-head h4{font-size:1rem}}
 @media print{.character-card{break-inside:avoid;box-shadow:none}.visual-section{break-inside:avoid}.item-icon{-webkit-print-color-adjust:exact;print-color-adjust:exact}.character-card-head,.visual-section-title,.character-points{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 
-.ammo-counter{display:flex;flex-wrap:wrap;gap:6px;padding:8px;border-top:1px solid #a6a298;break-inside:avoid}.ammo-bullet{width:12px;height:28px;flex:none;fill:none;stroke:#242620;stroke-width:1.2;stroke-linejoin:round}
+.ammo-counter{display:flex;flex-wrap:wrap;gap:6px;padding:8px;border-top:1px solid #a6a298;break-inside:avoid}.ammo-bullet{width:9.6px;height:22.4px;flex:none;fill:none;stroke:#242620;stroke-width:1.2;stroke-linejoin:round}
