@@ -32,3 +32,5 @@
 
 @media print{.character-page{contain:strict}.character-page .character-card{display:flow-root;break-inside:auto}.character-page .character-card *{break-before:auto!important;break-after:auto!important;break-inside:auto!important}}
 @media print{.sheet{margin:0}.sheet-wrap{position:static;background:white}.layout{margin:0}body{min-height:0}}
+
+.visual-item-head.illustrated-weapon{grid-template-columns:100px minmax(0,1fr)}.weapon-art{display:block;width:100px;height:50px}.weapon-art img{display:block;width:100px;height:50px;object-fit:contain;image-rendering:auto;mix-blend-mode:multiply}.illustrated-weapon>div{min-width:0;overflow-wrap:anywhere}
