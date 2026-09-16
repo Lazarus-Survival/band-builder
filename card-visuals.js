@@ -93,7 +93,7 @@ sheetMember=function(member,index){
   const weapons=member.weapons.filter(w=>w.name).map(weaponVisual).join("");
   const protection=[]; if(member.armor)protection.push(protectionVisual("Indumentaria",member.armor)); if(member.shield)protection.push(protectionVisual("Escudo",member.shield));
   const gear=member.gear.filter(Boolean).map(item=>fullRow(item,LAZARUS_DATA.gearText[item])).join("");
-  return `<article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(member.profile)}</span></div><div class="character-points"><b>${formatPoints(memberCost(member))}</b><span>PUNTOS</span></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>'))}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article>`;
+  return `<div class="character-page"><article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(state.name||"Banda sin nombre")}</span></div><div class="character-points character-role"><b>${escapeHtml(member.profile)}</b></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>'))}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article></div>`;
 };
 function costBreakdownSheet(){
   const b=band();
@@ -104,11 +104,11 @@ function costBreakdownSheet(){
     if(member.trait){
       const repeats=state.members.slice(0,index).filter(m=>m.trait===member.trait).length;
       const multiplier=2**repeats;
-      add('Dote · '+member.trait+(repeats?' ('+String(b.traits[member.trait]||0)+' ×'+multiplier+')':''),repeatedTraitCost(member));
+      add('Dote · '+member.trait+(repeats?' (C ×'+multiplier+')':''),repeatedTraitCost(member));
     }
     if(member.flaw){
       const repeats=state.members.slice(0,index).filter(m=>m.flaw===member.flaw).length;
-      add('Defecto · '+member.flaw+(repeats?' (valor ÷'+(2**repeats)+')':''),-repeatedFlawValue(member));
+      add('Defecto · '+member.flaw+(repeats?' (V ÷'+(2**repeats)+')':''),-repeatedFlawValue(member));
     }
     for(const weapon of member.weapons.filter(w=>w.name)){
       add('Arma · '+weapon.name,b.weapons[weapon.name]||0);
@@ -127,3 +127,11 @@ renderSummary=function(){
   if(state.members.length)el.sheet.insertAdjacentHTML('beforeend',costBreakdownSheet());
 };
 renderSummary();
+function fitCardsForPrint(){
+  const cards=[...el.sheet.querySelectorAll('.character-card')];
+  cards.forEach(card=>{card.style.setProperty('--print-scale','1');});
+  const pageHeight=276*96/25.4;
+  cards.forEach(card=>{for(let attempt=0;attempt<8;attempt++){const height=card.getBoundingClientRect().height;if(height<=pageHeight)break;card.style.setProperty('--print-scale',String(Number(card.style.getPropertyValue('--print-scale'))*pageHeight/height*0.99));}});
+}
+window.addEventListener('beforeprint',fitCardsForPrint);
+window.addEventListener('afterprint',()=>el.sheet.querySelectorAll('.character-card').forEach(card=>card.style.removeProperty('--print-scale')));

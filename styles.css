@@ -132,3 +132,5 @@ button.remove-loadout { width: 38px; height: 38px; padding: 0; align-self: end; 
 
 .weapon-select optgroup { color: #b8b8b8; background: #292d26; font-style: normal; font-weight: 700; }
 .weapon-select option { color: #fff; background: #11150f; font-weight: 400; }
+
+.trait-select-line{display:flex;align-items:center;gap:8px;min-width:0}.trait-select-line select{flex:1;min-width:0}.repeat-marker{flex:none;min-width:42px;font-size:.75rem;white-space:nowrap}

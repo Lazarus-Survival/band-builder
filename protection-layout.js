@@ -84,6 +84,10 @@ renderMembers = function() {
     card.querySelector(".member-flaw").innerHTML=options(band().flaws,member.flaw,"Sin defecto");
     card.querySelector(".member-armor").innerHTML=protectionOptions("armor",member.armor);
     card.querySelector(".member-shield").innerHTML=protectionOptions("shield",member.shield);
+    for(const [key,prefix] of [["trait","C ×"],["flaw","V ÷"]]){
+      const repeats=member[key]?state.members.slice(0,index).filter(m=>m[key]===member[key]).length:0;
+      card.querySelector('.repeat-'+key).textContent=repeats?prefix+(2**repeats):"";
+    }
     const stats=effectiveStats(member);
     card.querySelector(".stats").innerHTML=STAT_NAMES.map((stat,i)=>`<div class="stat"><b>${stats[i]??"-"}</b><span>${stat}</span></div>`).join("");
     renderWeaponRows(card,member);
@@ -121,9 +125,9 @@ render();
 (function loadVisualCards(){
   const css=document.createElement("link");
   css.rel="stylesheet";
-  css.href="card-visuals.css?v=20260916-7";
+  css.href="card-visuals.css?v=20260916-8";
   document.head.appendChild(css);
   const script=document.createElement("script");
-  script.src="card-visuals.js?v=20260916-7";
+  script.src="card-visuals.js?v=20260916-8";
   document.body.appendChild(script);
 })();
