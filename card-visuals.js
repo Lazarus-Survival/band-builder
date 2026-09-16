@@ -61,7 +61,7 @@ function fullRow(name,description,extra=""){
   return `<div class="visual-info-row">${iconBadge(name,description)}<div class="visual-info-copy"><div class="visual-info-title"><b>${escapeHtml(name)}</b>${extra}</div><p>${escapeHtml(description||"Consulta el reglamento.")}</p></div></div>`;
 }
 
-const WEAPON_ART={"Escopeta Militar":"escopeta-militar.png","Pistola Ligera":"pistola-ligera.png","Arma CC Ligera":"arma-cc-ligera.png","Fusil de Asalto":"fusil-de-asalto.png","Arma CC Pesada":"arma-cc-pesada.png","Espada":"espada.png","Arma a dos manos":"arma-a-dos-manos.png","Katana o Mandoble":"katana-o-mandoble.png","Lanza":"lanza.png","Motosierra":"motosierra.png","Bastón":"baston.png"};
+const WEAPON_ART={"Escopeta Militar":"escopeta-militar.png","Pistola Ligera":"pistola-ligera.png","Arma CC Ligera":"arma-cc-ligera.png","Fusil de Asalto":"fusil-de-asalto.png","Arma CC Pesada":"arma-cc-pesada.png","Espada":"espada.png","Arma a dos manos":"arma-a-dos-manos.png","Katana o Mandoble":"katana-o-mandoble.png","Lanza":"lanza.png","Motosierra":"motosierra.png","Bastón":"baston.png","Ametralladora Ligera":"ametralladora.png","Arco de Caza":"arco.png","Arco de Poleas/Ballesta":"ballesta.png","Carabina":"carabina.png","Escopeta":"escopeta.png","Fusil .22":"fusil-22.png","Fusil de Caza":"fusil-caza.png","Fusil de Combate":"fusil-combate.png","Lanzallamas":"lanzallamas.png","Rifle Submarino":"rifle-submarino.png","Subfusil":"subfusil.png"};
 function weaponArtwork(name,desc){
   const file=WEAPON_ART[name];
   return file?'<span class="weapon-art" aria-hidden="true"><img src="assets/weapons/'+file+'" width="100" height="50" alt=""></span>':iconBadge(name,desc);
