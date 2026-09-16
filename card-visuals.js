@@ -71,6 +71,15 @@ function protectionVisual(label,name){
   return `<div class="visual-item-card"><div class="visual-item-head">${iconBadge(name,desc)}<div><span class="visual-kicker">${label}</span><b>${escapeHtml(name)}</b></div></div><div class="visual-stat-table protection-stats"><div><span>Fuego</span><b>${p.fire}</b></div><div><span>CC</span><b>${p.cc}</b></div><div><span>Mordiscos</span><b>${p.bites}</b></div></div></div>`;
 }
 
+function vitalityCounters(stats){
+  const heart='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21 3.5 12.5C-2 7 5 0 12 7c7-7 14 0 8.5 5.5Z"/></svg>';
+  const strength='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M1 9h3v6H1zM4 5h4v14H4zM8 10h8v4H8zM16 5h4v14h-4zM20 9h3v6h-3z"/></svg>';
+  return '<div class="vitality-counters">'+[["Vida",stats[6],heart],["Resistencia (PR)",stats[5],strength]].map(([label,value,icon])=>{
+    const count=Number.isFinite(value)?Math.max(0,Math.floor(value)):0;
+    return '<div class="vitality-column"><b>'+label+'</b><div class="vitality-icons" role="img" aria-label="'+label+': '+escapeHtml(value??'—')+'">'+(count?icon.repeat(count):escapeHtml(value??'—'))+'</div></div>';
+  }).join('')+'</div>';
+}
+
 function visualSection(title,content,klass=""){
   return `<section class="visual-section ${klass}"><div class="visual-section-title">${title}</div>${content||'<div class="visual-empty">—</div>'}</section>`;
 }
@@ -82,6 +91,6 @@ sheetMember=function(member,index){
   const weapons=member.weapons.filter(w=>w.name).map(weaponVisual).join("");
   const protection=[]; if(member.armor)protection.push(protectionVisual("Indumentaria",member.armor)); if(member.shield)protection.push(protectionVisual("Escudo",member.shield));
   const gear=member.gear.filter(Boolean).map(item=>fullRow(item,LAZARUS_DATA.gearText[item])).join("");
-  return `<article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(member.profile)}</span></div><div class="character-points"><b>${formatPoints(memberCost(member))}</b><span>PUNTOS</span></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Dote / Defecto",(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>'))}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article>`;
+  return `<article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(member.profile)}</span></div><div class="character-points"><b>${formatPoints(memberCost(member))}</b><span>PUNTOS</span></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>'))}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article>`;
 };
 renderSummary();
