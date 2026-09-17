@@ -73,9 +73,14 @@ function weaponVisual(weapon){
   return `<div class="visual-item-card"><div class="visual-item-head${WEAPON_ART[weapon.name]?" illustrated-weapon":""}">${weaponArtwork(weapon.name,desc)}<div><b>${escapeHtml(weapon.name)}</b>${ammo?`<span>${ammo} proyectiles</span>`:""}</div></div><div class="visual-stat-table weapon-stats"><div><span>Alcance</span><b>${escapeHtml(p.range)}</b></div><div><span>Bono</span><b>${escapeHtml(p.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(p.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(p.dice)}</b></div><div class="special"><span>Especial</span><b>${escapeHtml(p.special)}</b></div></div>${bayonetRow}${ammo?`<div class="ammo-counter" role="img" aria-label="${ammo} proyectiles">${'<svg class="ammo-bullet" viewBox="0 0 12 28" aria-hidden="true"><path d="M3 10V7Q3 3 6 1Q9 3 9 7V10M2 10H10V24H2ZM1 24H11V27H1Z"/></svg>'.repeat(ammo)}</div>`:""}</div>`;
 }
 
+const PROTECTION_ART={"Protección ligera":"proteccion-ligera.png","Armadura primitiva":"armadura-primitiva.png","Blindaje I":"blindaje-i.png","Blindaje II":"blindaje-ii.png","Escudo de Mano":"escudo-mano.png","Escudo Balístico":"escudo-balistico.png"};
+function protectionArtwork(name,desc){
+  const file=PROTECTION_ART[name];
+  return file?'<span class="protection-art" aria-hidden="true"><img src="assets/protection/'+file+'" width="50" height="50" alt=""></span>':iconBadge(name,desc);
+}
 function protectionVisual(label,name){
   const desc=LAZARUS_DATA.armorText[name]||""; const p=parseProtectionProfile(name);
-  return `<div class="visual-item-card"><div class="visual-item-head">${iconBadge(name,desc)}<div><span class="visual-kicker">${label}</span><b>${escapeHtml(name)}</b></div></div><div class="visual-stat-table protection-stats"><div><span>Fuego</span><b>${p.fire}</b></div><div><span>CC</span><b>${p.cc}</b></div><div><span>Mordiscos</span><b>${p.bites}</b></div></div></div>`;
+  return `<div class="visual-item-card"><div class="visual-item-head">${protectionArtwork(name,desc)}<div><span class="visual-kicker">${label}</span><b>${escapeHtml(name)}</b></div></div><div class="visual-stat-table protection-stats"><div><span>Fuego</span><b>${p.fire}</b></div><div><span>CC</span><b>${p.cc}</b></div><div><span>Mordiscos</span><b>${p.bites}</b></div></div></div>`;
 }
 
 function vitalityCounters(stats){
