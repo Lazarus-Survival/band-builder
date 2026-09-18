@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles.css?v=20260916-8" />
 </head>
 <body>
-  <header class="hero"><div><p class="eyebrow">LAZARUS</p><h1>Band Builder</h1><p class="subtitle">Crea, valida y prepara la ficha de tu banda.</p></div><button id="printButton" class="secondary">Imprimir ficha</button></header>
+  <header class="hero"><div><p class="eyebrow">LAZARUS</p><h1>Band Builder</h1><p class="subtitle">Crea, valida y prepara la ficha de tu banda.</p></div><button id="interactivePdfButton" class="secondary">Descargar PDF interactivo</button><button id="printButton" class="secondary">Imprimir ficha</button></header>
   <main class="layout">
     <section class="panel builder">
       <div class="section-title"><div><p class="step">1. Configura la banda</p><h2>Datos generales</h2></div><div id="pointsBadge" class="points-badge">0 / 250 pts</div></div>
@@ -29,5 +29,8 @@
   <script src="approved-icons-part5.js?v=20260915-1"></script>
   <script src="approved-icons-part6.js?v=20260915-1"></script>
   <script src="icon-chain-fix.js?v=20260916-2"></script>
+  <script src="vendor/pdf-lib.min.js"></script>
+  <script src="vendor/html2canvas.min.js"></script>
+  <script src="interactive-pdf.js?v=20260917-1"></script>
 </body>
 </html>
