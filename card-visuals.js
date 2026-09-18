@@ -88,7 +88,7 @@ function vitalityCounters(stats){
   const strength='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 21 7v10l-9 5-9-5V7Z"/><path d="M5 12h4l2-4 3 8 2-4h3"/></svg>';
   return '<div class="vitality-counters">'+[["Vida",stats[6],life],["Resistencia (PR)",stats[5],strength]].map(([label,value,icon])=>{
     const count=Number.isFinite(value)?Math.max(0,Math.floor(value)):0;
-    return '<div class="vitality-column"><div class="vitality-icons" role="img" aria-label="'+label+': '+escapeHtml(value??'—')+'">'+(count?icon.repeat(count):escapeHtml(value??'—'))+'</div></div>';
+    return '<div class="vitality-column"><div class="vitality-label">'+label+'</div><div class="vitality-icons" role="img" aria-label="'+label+': '+escapeHtml(value??'—')+'">'+(count?icon.repeat(count):escapeHtml(value??'—'))+'</div></div>';
   }).join('')+'</div>';
 }
 
@@ -100,10 +100,11 @@ sheetMember=function(member,index){
   const stats=effectiveStats(member);
   const dote=member.trait?fullRow(member.trait,LAZARUS_DATA.traits[member.trait]?.text):"";
   const defecto=member.flaw?fullRow(member.flaw,LAZARUS_DATA.flaws[member.flaw]?.text):"";
-  const weapons=member.weapons.filter(w=>w.name).map(weaponVisual).join("");
-  const protection=[]; if(member.armor)protection.push(protectionVisual("Indumentaria",member.armor)); if(member.shield)protection.push(protectionVisual("Escudo",member.shield));
+  const selectedWeapons=member.weapons.filter(w=>w.name);
+  const weapons=selectedWeapons.length?'<div class="sheet-items '+(selectedWeapons.length>1?'sheet-pair':'')+'">'+selectedWeapons.map(weaponVisual).join('')+'</div>':'';
+  const protection=[]; if(member.armor||member.shield){protection.push('<div class="sheet-items sheet-pair">'+(member.armor?protectionVisual("Indumentaria",member.armor):'<div class="visual-empty">Sin indumentaria</div>')+(member.shield?protectionVisual("Escudo",member.shield):'<div class="visual-empty">Sin escudo</div>')+'</div>');}
   const gear=member.gear.filter(Boolean).map(item=>fullRow(item,LAZARUS_DATA.gearText[item])).join("");
-  return `<div class="character-page"><article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(state.name||"Banda sin nombre")}</span></div><div class="character-points character-role"><b>${escapeHtml(member.profile)}</b></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>'))}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article></div>`;
+  return `<div class="character-page"><article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(state.name||"Banda sin nombre")}</span></div><div class="character-points character-role"><b>${escapeHtml(member.profile)}</b></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",'<div class="sheet-pair sheet-traits">'+(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>')+'</div>')}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article></div>`;
 };
 function costBreakdownSheet(){
   const b=band();

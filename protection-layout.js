@@ -125,9 +125,9 @@ render();
 (function loadVisualCards(){
   const css=document.createElement("link");
   css.rel="stylesheet";
-  css.href="card-visuals.css?v=20260917-3";
+  css.href="card-visuals.css?v=20260918-1";
   document.head.appendChild(css);
   const script=document.createElement("script");
-  script.src="card-visuals.js?v=20260917-3";
+  script.src="card-visuals.js?v=20260918-1";
   document.body.appendChild(script);
 })();
