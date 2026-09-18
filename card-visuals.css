@@ -37,10 +37,14 @@
 
 .protection-art,.protection-art img{display:block;width:50px;height:50px}.protection-art img{object-fit:contain;image-rendering:auto;mix-blend-mode:multiply}
 
+.sheet-pair,.sheet-items{display:contents}
+.print-section-heading,.print-placeholder{display:none}
+@media print{
 .sheet-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
 .sheet-traits>.visual-info-row{grid-template-columns:50px minmax(0,1fr);border-top:0;align-items:start}
 .sheet-traits>:nth-child(2){border-left:1px solid #c9c4b8;align-self:stretch}
 .sheet-items{padding:8px;gap:8px}
+.sheet-items:not(.sheet-pair){display:block}
 .sheet-items>.visual-item-card{margin:0;min-width:0}
 .sheet-items .visual-item-head{min-height:66px;grid-template-columns:50px minmax(0,1fr)}
 .sheet-items .illustrated-weapon{grid-template-columns:100px minmax(0,1fr)}
@@ -48,8 +52,13 @@
 .sheet-pair .weapon-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
 .sheet-pair .weapon-stats .special{grid-column:1/-1;border-top:1px solid #a6a298;border-right:0}
 .sheet-pair .weapon-stats>div:nth-child(4){border-right:0}
-.vitality-label{font-size:.7rem;font-weight:900;text-transform:uppercase;margin-bottom:5px}
-@media screen and (max-width:620px){.sheet-pair{grid-template-columns:1fr}.sheet-traits>:nth-child(2){border-left:0;border-top:1px solid #c9c4b8}}
+.print-placeholder{display:block}
+.screen-section-heading{display:none}
+.visual-section-title:has(.print-section-heading){padding:0}
+.print-section-heading{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.print-section-heading>span{padding:7px 9px}
+.print-section-heading>span+span{border-left:1px solid #aaa69a}
+}
 
 /* Keep printer headers outside the page and reserve margins within each sheet.
    Break only before the next sheet, never both after and before adjacent sheets. */
