@@ -1,5 +1,5 @@
 /* Local raster artwork with real AcroForm widgets; never flatten the form. */
-async function createInteractivePDF(){
+async function createInteractivePDF(interactive=true){
   if(!state.members.length)throw new Error('Añade al menos un miembro a la banda.');
   if(typeof fitCardsForPrint!=='function')throw new Error('La ficha todavía se está cargando. Inténtalo de nuevo en unos segundos.');
   const {PDFDocument,PDFName,PDFHexString}=PDFLib;
@@ -48,6 +48,7 @@ async function createInteractivePDF(){
     }
     for(const [memberIndex,card] of [...clone.querySelectorAll('.character-card')].entries()){
       const page=pdf.addPage([W,H]), placed=await place(page,card,H-M,usableH), origin=card.getBoundingClientRect();
+      if(!interactive)continue;
       const groups=[...card.querySelectorAll('.vitality-icons')].map((n,i)=>({node:n,key:i?'resistencia':'vida',label:i?'Resistencia gastada':'Herida recibida'}));
       card.querySelectorAll('.ammo-counter').forEach((n,i)=>groups.push({node:n,key:'arma-'+i,label:'Munición consumida: '+n.closest('.visual-item-card').querySelector('b').textContent}));
       for(const group of groups)for(const [i,icon] of [...group.node.querySelectorAll('svg')].entries()){
@@ -67,11 +68,44 @@ async function createInteractivePDF(){
     return await pdf.save({updateFieldAppearances:false});
   }finally{frame.remove();}
 }
-document.querySelector('#interactivePdfButton').addEventListener('click',async function(){
-  const button=this,original=button.textContent;button.disabled=true;button.textContent='Preparando PDF…';
-  try{
-    const bytes=await createInteractivePDF(),url=URL.createObjectURL(new Blob([bytes],{type:'application/pdf'}));
-    const link=document.createElement('a');link.href=url;link.download=(state.name||'Mi banda').replace(/[<>:"/\\|?*]/g,'-')+'-interactiva.pdf';link.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
-  }catch(error){alert('No se pudo crear el PDF. '+error.message);}
-  finally{button.disabled=false;button.textContent=original;}
-});
+
+const exportToggle=document.querySelector('#printButton');
+const exportOptions=document.querySelector('#exportOptions');
+function closeExportMenu(){exportOptions.hidden=true;exportToggle.setAttribute('aria-expanded','false');}
+exportToggle.addEventListener('click',()=>{exportOptions.hidden=!exportOptions.hidden;exportToggle.setAttribute('aria-expanded',String(!exportOptions.hidden));});
+document.addEventListener('click',event=>{if(!event.target.closest('.export-control'))closeExportMenu();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!exportOptions.hidden){closeExportMenu();exportToggle.focus();}});
+function downloadExport(data,type,suffix){
+  const url=URL.createObjectURL(new Blob([data],{type}));
+  const link=document.createElement('a');link.href=url;link.download=(state.name||'Mi banda').replace(/[<>:"/\\|?*]/g,'-')+suffix;link.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+function exportPlainText(){
+  if(!state.members.length)throw new Error('Añade al menos un miembro a la banda.');
+  const lines=[state.name||'Mi banda',band().name,totalCost()+' / '+state.limit+' pts',''];
+  for(const card of el.sheet.querySelectorAll('.character-card')){
+    const copy=card.cloneNode(true);
+    copy.querySelectorAll('.print-section-heading,.print-placeholder').forEach(n=>n.remove());
+    copy.querySelectorAll('.vitality-icons,.ammo-counter').forEach(n=>n.textContent=n.getAttribute('aria-label'));
+    // Read the displayed text with its line breaks, without decorative icons.
+    copy.style.cssText='position:fixed;left:-12000px;width:718px';document.body.append(copy);
+    lines.push(copy.innerText.trim(),'');copy.remove();
+  }
+  lines.push('DESGLOSE DE COSTES');
+  for(const member of el.sheet.querySelectorAll('.cost-member')){
+    lines.push(member.querySelector('h4').textContent);
+    member.querySelectorAll('tbody tr,tfoot tr').forEach(row=>lines.push([...row.children].map(cell=>cell.textContent).join(' · ')));
+    lines.push('');
+  }
+  lines.push('Total de la banda: '+totalCost()+' / '+state.limit+' pts');
+  return lines.join('\r\n');
+}
+for(const [id,kind] of [['pdfButton','pdf'],['interactivePdfButton','interactive'],['textButton','text']]){
+  document.getElementById(id).addEventListener('click',async()=>{
+    closeExportMenu();exportToggle.disabled=true;exportToggle.textContent='Preparando archivo…';
+    try{
+      if(kind==='text')downloadExport('\uFEFF'+exportPlainText(),'text/plain;charset=utf-8','.txt');
+      else downloadExport(await createInteractivePDF(kind==='interactive'),'application/pdf',kind==='interactive'?'-interactiva.pdf':'.pdf');
+    }catch(error){alert('No se pudo exportar la ficha. '+error.message);}
+    finally{exportToggle.disabled=false;exportToggle.textContent='Imprimir ficha ▾';}
+  });
+}

@@ -147,6 +147,6 @@ el.bandName.addEventListener("input",e=>{state.name=e.target.value;renderSummary
 el.pointsLimit.addEventListener("input",e=>{state.limit=Math.max(1,Number(e.target.value)||250);renderSummary();});
 el.bandType.addEventListener("change",e=>{state.bandKey=e.target.value;state.members=[];addMember(firstProfile());});
 el.addMember.addEventListener("click",()=>{const profile=firstAvailableProfile();if(profile)addMember(profile);else alert("Has alcanzado el máximo de todos los perfiles disponibles para esta banda.");});
-el.print.addEventListener("click",()=>window.print());
+
 for(const[key,b]of Object.entries(LAZARUS_DATA.bands)){const option=document.createElement("option");option.value=key;option.textContent=b.name;el.bandType.appendChild(option);}
 addMember(firstProfile());
