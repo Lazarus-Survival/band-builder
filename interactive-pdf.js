@@ -71,10 +71,17 @@ async function createInteractivePDF(interactive=true){
 
 const exportToggle=document.querySelector('#printButton');
 const exportOptions=document.querySelector('#exportOptions');
-function closeExportMenu(){exportOptions.hidden=true;exportToggle.setAttribute('aria-expanded','false');}
-exportToggle.addEventListener('click',()=>{exportOptions.hidden=!exportOptions.hidden;exportToggle.setAttribute('aria-expanded',String(!exportOptions.hidden));});
-document.addEventListener('click',event=>{if(!event.target.closest('.export-control'))closeExportMenu();});
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!exportOptions.hidden){closeExportMenu();exportToggle.focus();}});
+const textExportDialog=document.querySelector('#textExportDialog');
+const exportText=document.querySelector('#exportText');
+function closeExportMenu(){exportOptions.close();}
+exportToggle.addEventListener('click',()=>exportOptions.showModal());
+for(const dialog of [exportOptions,textExportDialog]){
+  dialog.addEventListener('click',event=>{const r=dialog.getBoundingClientRect();if(event.target===dialog&&(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom))dialog.close();});
+}
+document.querySelector('#copyTextButton').addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(exportText.value);document.querySelector('#copyStatus').textContent='Texto copiado.';}
+  catch(error){exportText.focus();exportText.select();document.querySelector('#copyStatus').textContent='Texto seleccionado. Pulsa Ctrl+C o usa la opción Copiar de tu dispositivo.';}
+});
 function downloadExport(data,type,suffix){
   const url=URL.createObjectURL(new Blob([data],{type}));
   const link=document.createElement('a');link.href=url;link.download=(state.name||'Mi banda').replace(/[<>:"/\\|?*]/g,'-')+suffix;link.click();setTimeout(()=>URL.revokeObjectURL(url),60000);
@@ -103,9 +110,9 @@ for(const [id,kind] of [['pdfButton','pdf'],['interactivePdfButton','interactive
   document.getElementById(id).addEventListener('click',async()=>{
     closeExportMenu();exportToggle.disabled=true;exportToggle.textContent='Preparando archivo…';
     try{
-      if(kind==='text')downloadExport('\uFEFF'+exportPlainText(),'text/plain;charset=utf-8','.txt');
+      if(kind==='text'){exportText.value=exportPlainText();document.querySelector('#copyStatus').textContent='';textExportDialog.showModal();exportText.focus();}
       else downloadExport(await createInteractivePDF(kind==='interactive'),'application/pdf',kind==='interactive'?'-interactiva.pdf':'.pdf');
     }catch(error){alert('No se pudo exportar la ficha. '+error.message);}
-    finally{exportToggle.disabled=false;exportToggle.textContent='Imprimir ficha ▾';}
+    finally{exportToggle.disabled=false;exportToggle.textContent='Imprimir ficha';}
   });
 }
