@@ -57,8 +57,14 @@ function parseProtectionProfile(name){
   return out;
 }
 
-function fullRow(name,description,extra=""){
-  return `<div class="visual-info-row">${iconBadge(name,description)}<div class="visual-info-copy"><div class="visual-info-title"><b>${escapeHtml(name)}</b>${extra}</div><p>${escapeHtml(description||"Consulta el reglamento.")}</p></div></div>`;
+const GEAR_ART={"Linterna": "linterna.png", "Linterna Manos libres": "linterna-manos-libres.png", "Foco halógeno": "foco-halogeno.png", "Cuerda y gancho": "cuerda-y-gancho.png", "Visión Nocturna": "vision-nocturna.png", "Visión Termal": "vision-termal.png", "Botiquín": "botiquin.png", "Silenciador": "silenciador.png", "Visor Óptico": "visor-optico.png", "Mira Telescópica": "mira-telescopica.png", "Mochila grande": "mochila-grande.png"};
+function gearArtwork(name){
+  const file=GEAR_ART[name];
+  return file?'<span class="gear-art" aria-hidden="true"><img src="assets/gear/'+file+'" width="50" height="50" alt=""></span>':"";
+}
+
+function fullRow(name,description,extra="",artwork=""){
+  return `<div class="visual-info-row">${artwork||iconBadge(name,description)}<div class="visual-info-copy"><div class="visual-info-title"><b>${escapeHtml(name)}</b>${extra}</div><p>${escapeHtml(description||"Consulta el reglamento.")}</p></div></div>`;
 }
 
 const WEAPON_ART={"Escopeta Militar":"escopeta-militar.png","Pistola Ligera":"pistola-ligera.png","Arma CC Ligera":"arma-cc-ligera.png","Fusil de Asalto":"fusil-de-asalto.png","Arma CC Pesada":"arma-cc-pesada.png","Espada":"espada.png","Arma a dos manos":"arma-a-dos-manos.png","Katana o Mandoble":"katana-o-mandoble.png","Lanza":"lanza.png","Motosierra":"motosierra.png","Bastón":"baston.png","Ametralladora Ligera":"ametralladora.png","Arco de Caza":"arco.png","Arco de Poleas/Ballesta":"ballesta.png","Carabina":"carabina.png","Escopeta":"escopeta.png","Fusil .22":"fusil-22.png","Fusil de Caza":"fusil-caza.png","Fusil de Combate":"fusil-combate.png","Lanzallamas":"lanzallamas.png","Rifle Submarino":"rifle-submarino.png","Subfusil":"subfusil.png","Escopeta Recortada":"escopeta-recortada.png","Honda":"honda.png","Pistola .22":"pistola-22.png","Pistola Ametralladora":"pistola-ametralladora.png","Pistola de Clavos":"pistola-clavos.png","Pistola Pesada":"pistola-pesada.png"};
@@ -105,7 +111,7 @@ sheetMember=function(member,index){
   const selectedWeapons=member.weapons.filter(w=>w.name);
   const weapons=selectedWeapons.length?'<div class="sheet-items '+(selectedWeapons.length>1?'sheet-pair':'')+'">'+selectedWeapons.map(weaponVisual).join('')+'</div>':'';
   const protection=[]; if(member.armor||member.shield){protection.push('<div class="sheet-items sheet-pair">'+(member.armor?protectionVisual("Indumentaria",member.armor):'<div class="visual-empty print-placeholder">Sin indumentaria</div>')+(member.shield?protectionVisual("Escudo",member.shield):'<div class="visual-empty print-placeholder">Sin escudo</div>')+'</div>');}
-  const gear=member.gear.filter(Boolean).map(item=>fullRow(item,LAZARUS_DATA.gearText[item])).join("");
+  const gear=member.gear.filter(Boolean).map(item=>fullRow(item,LAZARUS_DATA.gearText[item],"",gearArtwork(item))).join("");
   return `<div class="character-page"><article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(state.name||"Banda sin nombre")}</span></div><div class="character-points character-role"><b>${escapeHtml(member.profile)}</b></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",'<div class="sheet-pair sheet-traits">'+(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>')+'</div>')}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article></div>`;
 };
 function costBreakdownSheet(){
