@@ -145,3 +145,5 @@ button.remove-loadout { width: 38px; height: 38px; padding: 0; align-self: end; 
 .text-export-actions{display:flex;justify-content:space-between;gap:12px}
 #copyStatus{min-height:1.5em}
 @media print{.export-dialog{display:none!important}}
+
+.tool-option{display:flex;align-items:center;gap:8px;padding:12px 0}.tool-option input{width:auto}.locked-tool{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid #697558;border-radius:8px}.locked-tool img{object-fit:contain}.locked-tool p{margin:3px 0}

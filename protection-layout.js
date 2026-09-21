@@ -28,7 +28,7 @@ memberCost = function(member) {
   const b = band();
   const p = b.profiles[member.profile];
   if (!p) return 0;
-  const weaponCost = member.weapons.reduce((sum,weapon)=>sum+(b.weapons[weapon.name]||0)+ammoCost(weapon),0);
+  const weaponCost = member.weapons.reduce((sum,weapon)=>sum+(b.weapons[weapon.name]||0)+ammoCost(weapon)+toolCost(weapon),0);
   const gearCost = member.gear.reduce((sum,item)=>sum+(b.gear[item]||0),0);
   return p.cost + repeatedTraitCost(member) - repeatedFlawValue(member) +
     (b.armor[member.armor]||0) + (b.armor[member.shield]||0) + weaponCost + gearCost;
@@ -40,7 +40,7 @@ ruleDetails = function(member) {
   if(member.flaw) rows.push(`<div class="rule-line"><b>Defecto · ${escapeHtml(member.flaw)}:</b> ${escapeHtml(LAZARUS_DATA.flaws[member.flaw]?.text||"Consulta el reglamento.")} <em>(-${formatPoints(repeatedFlawValue(member))} pts)</em></div>`);
   for(const weapon of member.weapons.filter(w=>w.name)){
     const ammo=ammoDescription(weapon);
-    rows.push(`<div class="rule-line"><b>Arma · ${escapeHtml(weapon.name)}:</b> ${escapeHtml(LAZARUS_DATA.weapons[weapon.name]?.text||"")}${ammo?` <span class="ammo-note">· ${escapeHtml(ammo)}</span>`:""}</div>`);
+    rows.push(`<div class="rule-line"><b>Arma · ${escapeHtml(weapon.name)}:</b> ${escapeHtml(weaponRuleText(weapon))}${ammo?` <span class="ammo-note">· ${escapeHtml(ammo)}</span>`:""}</div>`);
   }
   if(member.armor) rows.push(`<div class="rule-line"><b>Indumentaria · ${escapeHtml(member.armor)}:</b> ${escapeHtml(LAZARUS_DATA.armorText[member.armor]||"")}</div>`);
   if(member.shield) rows.push(`<div class="rule-line"><b>Escudo · ${escapeHtml(member.shield)}:</b> ${escapeHtml(LAZARUS_DATA.armorText[member.shield]||"")}</div>`);
@@ -50,19 +50,19 @@ ruleDetails = function(member) {
   return rows.join("");
 };
 
-bindMember = function(card,member) {
+bindMember = function(card,member) {bindLoadoutExtras(card,member);
   card.querySelector(".member-name").addEventListener("input",e=>{member.name=e.target.value;renderSummary();});
   const fields={".member-profile":"profile",".member-trait":"trait",".member-flaw":"flaw",".member-armor":"armor",".member-shield":"shield"};
   for(const[selector,key]of Object.entries(fields)){
     card.querySelector(selector).addEventListener("change",e=>{member[key]=e.target.value;render();});
   }
   card.querySelector(".add-weapon").addEventListener("click",()=>{member.weapons.push(newWeapon());render();});
-  card.querySelectorAll(".weapon-select").forEach(select=>{select.addEventListener("change",e=>{const weapon=member.weapons[Number(e.target.dataset.index)];weapon.name=e.target.value;weapon.ammoBlocks=1;render();});});
+  card.querySelectorAll(".weapon-select").forEach(select=>{select.addEventListener("change",e=>{const weapon=member.weapons[Number(e.target.dataset.index)];clearWeaponLinks(member,weapon);weapon.name=e.target.value;weapon.ammoBlocks=1;render();});});
   card.querySelectorAll(".ammo-select").forEach(select=>{select.addEventListener("change",e=>{member.weapons[Number(e.target.dataset.index)].ammoBlocks=Math.max(1,Number(e.target.value)||1);render();});});
-  card.querySelectorAll(".remove-weapon").forEach(button=>{button.addEventListener("click",e=>{member.weapons.splice(Number(e.currentTarget.dataset.index),1);if(member.weapons.length===0)member.weapons.push(newWeapon());render();});});
+  card.querySelectorAll(".remove-weapon").forEach(button=>{button.addEventListener("click",e=>{clearWeaponLinks(member,member.weapons[Number(e.currentTarget.dataset.index)]);member.weapons.splice(Number(e.currentTarget.dataset.index),1);if(member.weapons.length===0)member.weapons.push(newWeapon());render();});});
   card.querySelector(".add-gear").addEventListener("click",()=>{member.gear.push("");render();});
-  card.querySelectorAll(".gear-select").forEach(select=>{select.addEventListener("change",e=>{member.gear[Number(e.target.dataset.index)]=e.target.value;render();});});
-  card.querySelectorAll(".remove-gear").forEach(button=>{button.addEventListener("click",e=>{member.gear.splice(Number(e.currentTarget.dataset.index),1);if(member.gear.length===0)member.gear.push("");render();});});
+  card.querySelectorAll(".gear-select").forEach(select=>{select.addEventListener("change",e=>{member.gearTargets[Number(e.target.dataset.index)]="";member.gear[Number(e.target.dataset.index)]=e.target.value;render();});});
+  card.querySelectorAll(".remove-gear").forEach(button=>{button.addEventListener("click",e=>{member.gearTargets.splice(Number(e.currentTarget.dataset.index),1);member.gear.splice(Number(e.currentTarget.dataset.index),1);if(member.gear.length===0)member.gear.push("");render();});});
   card.querySelector(".remove-member").addEventListener("click",()=>{state.members=state.members.filter(m=>m.id!==member.id);render();});
 };
 
@@ -110,7 +110,7 @@ sheetMember = function(member,index) {
   const weapons=[];
   for(const weapon of member.weapons.filter(w=>w.name)){
     const ammo=ammoDescription(weapon);
-    weapons.push(`<p><b>${escapeHtml(weapon.name)}:</b> ${escapeHtml(LAZARUS_DATA.weapons[weapon.name]?.text||"")}${ammo?`<br><span class="sheet-ammo"><b>${escapeHtml(ammo)}</b></span>`:""}</p>`);
+    weapons.push(`<p><b>${escapeHtml(weapon.name)}:</b> ${escapeHtml(weaponRuleText(weapon))}${ammo?`<br><span class="sheet-ammo"><b>${escapeHtml(ammo)}</b></span>`:""}</p>`);
   }
   const protection=[];
   if(member.armor) protection.push(`<p><b>Indumentaria — ${escapeHtml(member.armor)}:</b> ${escapeHtml(LAZARUS_DATA.armorText[member.armor]||"")}</p>`);
@@ -125,9 +125,9 @@ render();
 (function loadVisualCards(){
   const css=document.createElement("link");
   css.rel="stylesheet";
-  css.href="card-visuals.css?v=20260920-3";
+  css.href="card-visuals.css?v=20260920-4";
   document.head.appendChild(css);
   const script=document.createElement("script");
-  script.src="card-visuals.js?v=20260920-3";
+  script.src="card-visuals.js?v=20260920-4";
   document.body.appendChild(script);
 })();

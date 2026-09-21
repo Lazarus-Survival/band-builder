@@ -35,8 +35,8 @@ function pictogram(name,text=""){
 }
 function iconBadge(name,text=""){return `<span class="item-icon" aria-hidden="true">${pictogram(name,text)}</span>`;}
 
-function parseWeaponProfile(name){
-  const text=LAZARUS_DATA.weapons[name]?.text||"";
+function parseWeaponProfile(name,description){
+  const text=description??LAZARUS_DATA.weapons[name]?.text??"";
   const parts=text.split("·").map(v=>v.trim().replace(/\.$/,"")).filter(Boolean);
   const out={range:parts.shift()||"—",bonus:"—",damage:"—",dice:"—",special:[]};
   for(const part of parts){
@@ -72,11 +72,11 @@ function weaponArtwork(name,desc){
   const file=WEAPON_ART[name];
   return file?'<span class="weapon-art" aria-hidden="true"><img src="assets/weapons/'+file+'" width="100" height="50" alt=""></span>':iconBadge(name,desc);
 }
-function weaponVisual(weapon){
-  const desc=LAZARUS_DATA.weapons[weapon.name]?.text||""; const p=parseWeaponProfile(weapon.name); const ammo=ammoCount(weapon);
+function weaponVisual(weapon,member){
+  const desc=weaponRuleText(weapon); const p=parseWeaponProfile(weapon.name,desc); const ammo=ammoCount(weapon);
   const bayonet=["Fusil Militar","Fusil de Combate","Fusil de Asalto"].includes(weapon.name)?parseWeaponProfile("Arma CC Ligera"):null;
   const bayonetRow=bayonet?`<div class="visual-stat-table weapon-stats bayonet-stats"><div><span>Alcance</span><b>${escapeHtml(bayonet.range)}</b></div><div><span>Bono</span><b>${escapeHtml(bayonet.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(bayonet.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(bayonet.dice)}</b></div><div class="special"><span>Especial</span><b>Bayoneta</b></div></div>`:"";
-  return `<div class="visual-item-card"><div class="visual-item-head${WEAPON_ART[weapon.name]?" illustrated-weapon":""}">${weaponArtwork(weapon.name,desc)}<div><b>${escapeHtml(weapon.name)}</b>${ammo?`<span>${ammo} proyectiles</span>`:""}</div></div><div class="visual-stat-table weapon-stats"><div><span>Alcance</span><b>${escapeHtml(p.range)}</b></div><div><span>Bono</span><b>${escapeHtml(p.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(p.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(p.dice)}</b></div><div class="special"><span>Especial</span><b>${escapeHtml(p.special)}</b></div></div>${bayonetRow}${ammo?`<div class="ammo-counter" role="img" aria-label="${ammo} proyectiles">${'<svg class="ammo-bullet" viewBox="0 0 12 28" aria-hidden="true"><path d="M3 10V7Q3 3 6 1Q9 3 9 7V10M2 10H10V24H2ZM1 24H11V27H1Z"/></svg>'.repeat(ammo)}</div>`:""}</div>`;
+  return `<div class="visual-item-card"><div class="visual-item-head${WEAPON_ART[weapon.name]?" illustrated-weapon":""}">${weaponArtwork(weapon.name,desc)}<div><b>${escapeHtml(weapon.name)}</b>${ammo?`<span>${ammo} proyectiles</span>`:""}</div></div><div class="visual-stat-table weapon-stats"><div><span>Alcance</span><b>${escapeHtml(p.range)}</b></div><div><span>Bono</span><b>${escapeHtml(p.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(p.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(p.dice)}</b></div><div class="special"><span>Especial</span><b>${escapeHtml(p.special)}</b></div></div>${bayonetRow}${member?weaponAttachments(member,weapon).map(item=>fullRow(item,LAZARUS_DATA.gearText[item],"",gearArtwork(item))).join(""):""}${ammo?`<div class="ammo-counter" role="img" aria-label="${ammo} proyectiles">${'<svg class="ammo-bullet" viewBox="0 0 12 28" aria-hidden="true"><path d="M3 10V7Q3 3 6 1Q9 3 9 7V10M2 10H10V24H2ZM1 24H11V27H1Z"/></svg>'.repeat(ammo)}</div>`:""}</div>`;
 }
 
 const PROTECTION_ART={"Protección ligera":"proteccion-ligera.png","Armadura primitiva":"armadura-primitiva.png","Blindaje I":"blindaje-i.png","Blindaje II":"blindaje-ii.png","Escudo de Mano":"escudo-mano.png","Escudo Balístico":"escudo-balistico.png"};
@@ -109,9 +109,9 @@ sheetMember=function(member,index){
   const dote=member.trait?fullRow(member.trait,LAZARUS_DATA.traits[member.trait]?.text):"";
   const defecto=member.flaw?fullRow(member.flaw,LAZARUS_DATA.flaws[member.flaw]?.text):"";
   const selectedWeapons=member.weapons.filter(w=>w.name);
-  const weapons=selectedWeapons.length?'<div class="sheet-items '+(selectedWeapons.length>1?'sheet-pair':'')+'">'+selectedWeapons.map(weaponVisual).join('')+'</div>':'';
+  const weapons=selectedWeapons.length?'<div class="sheet-items '+(selectedWeapons.length>1?'sheet-pair':'')+'">'+selectedWeapons.map(w=>weaponVisual(w,member)).join('')+'</div>':'';
   const protection=[]; if(member.armor||member.shield){protection.push('<div class="sheet-items sheet-pair">'+(member.armor?protectionVisual("Indumentaria",member.armor):'<div class="visual-empty print-placeholder">Sin indumentaria</div>')+(member.shield?protectionVisual("Escudo",member.shield):'<div class="visual-empty print-placeholder">Sin escudo</div>')+'</div>');}
-  const gear=member.gear.filter(Boolean).map(item=>fullRow(item,LAZARUS_DATA.gearText[item],"",gearArtwork(item))).join("");
+  const gear=member.gear.filter((item,i)=>item&&!attachmentWeapon(member,i)).map(item=>fullRow(item,LAZARUS_DATA.gearText[item],"",gearArtwork(item))).join("")+toolWeapons(member).map(w=>fullRow("Herramienta",TOOL_TEXT,"",'<span class="gear-art"><img src="assets/weapons/arma-cc-pesada.png" width="50" height="50" alt=""></span>')).join("");
   return `<div class="character-page"><article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(state.name||"Banda sin nombre")}</span></div><div class="character-points character-role"><b>${escapeHtml(member.profile)}</b></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",'<div class="sheet-pair sheet-traits">'+(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>')+'</div>')}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article></div>`;
 };
 function costBreakdownSheet(){
@@ -131,11 +131,12 @@ function costBreakdownSheet(){
     }
     for(const weapon of member.weapons.filter(w=>w.name)){
       add('Arma · '+weapon.name,b.weapons[weapon.name]||0);
+      if(toolCost(weapon))add('Herramienta · '+weapon.name,toolCost(weapon));
       if(ammoRule(weapon.name))add('Munición · '+weapon.name+' · '+ammoCount(weapon)+' proyectiles'+(ammoCost(weapon)?' (coste adicional)':' (incluidos)'),ammoCost(weapon));
     }
     if(member.armor)add('Indumentaria · '+member.armor,b.armor[member.armor]||0);
     if(member.shield)add('Escudo · '+member.shield,b.armor[member.shield]||0);
-    for(const item of member.gear.filter(Boolean))add('Equipo · '+item,b.gear[item]||0);
+    member.gear.forEach((item,i)=>{if(item){const target=attachmentWeapon(member,i);add('Equipo · '+item+(target?' → '+target.name:''),b.gear[item]||0);}});
     return '<article class="cost-member"><h4>'+escapeHtml(member.name||member.profile+' '+(index+1))+'</h4><table><thead><tr><th>Concepto</th><th>Coste</th></tr></thead><tbody>'+rows.join('')+'</tbody><tfoot><tr><th>Total del miembro</th><td>'+String(memberCost(member))+' pts</td></tr></tfoot></table></article>';
   }).join('');
   return '<section class="cost-breakdown"><h3>Desglose de costes</h3><p>'+escapeHtml(state.name||'Banda sin nombre')+' · '+escapeHtml(b.name)+'</p>'+members+'<p class="cost-grand-total">Total de la banda: '+String(totalCost())+' / '+String(state.limit)+' pts</p></section>';
