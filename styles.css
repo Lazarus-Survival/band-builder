@@ -147,3 +147,16 @@ button.remove-loadout { width: 38px; height: 38px; padding: 0; align-self: end; 
 @media print{.export-dialog{display:none!important}}
 
 .tool-option{display:flex;align-items:center;gap:8px;padding:12px 0}.tool-option input{width:auto}.locked-tool{display:flex;gap:12px;align-items:center;padding:10px;border:1px solid #697558;border-radius:8px}.locked-tool img{object-fit:contain}.locked-tool p{margin:3px 0}
+
+/* Equal control widths; reserve the same space as the trait repeat marker. */
+.member-card .grid.member-traits-row,.member-card .protection-grid,.member-card .loadout-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.member-card .loadout-row{position:relative}
+.member-card .loadout-row>label,.member-card .protection-grid>label{min-width:0;padding-right:50px}
+.member-card .loadout-row select,.member-card .protection-grid select{width:100%;min-width:0}
+.member-card .loadout-row>label:nth-child(2){grid-column:2;grid-row:1}
+.member-card .loadout-row>.remove-loadout{position:absolute;right:0;bottom:0;grid-column:auto;grid-row:auto}
+.member-card .trait-select-line select{width:0}
+@media(max-width:600px){
+  .member-card .grid.member-traits-row,.member-card .protection-grid,.member-card .loadout-row{grid-template-columns:minmax(0,1fr)}
+  .member-card .loadout-row>label:nth-child(2){grid-column:1;grid-row:2}
+}
