@@ -38,12 +38,16 @@ function iconBadge(name,text=""){return `<span class="item-icon" aria-hidden="tr
 function parseWeaponProfile(name,description){
   const text=description??LAZARUS_DATA.weapons[name]?.text??"";
   const parts=text.split("·").map(v=>v.trim().replace(/\.$/,"")).filter(Boolean);
-  const out={range:parts.shift()||"—",bonus:"—",damage:"—",dice:"—",special:[]};
+  const noise=text.match(/\bRuido\s+(\d+)/i);
+  const out={range:parts.shift()||"—",bonus:"—",damage:"—",dice:"—",noise:noise?Number(noise[1]):LAZARUS_DATA.weapons[name]?.ranged?1:0,special:[]};
   for(const part of parts){
     if(/^Daño\s+/i.test(part))out.damage=part.replace(/^Daño\s+/i,"");
     else if(/^\d+\s+dado/i.test(part))out.dice=part.match(/^\d+/)?.[0]||part;
     else if(/^[+\-]?\d*\s*\/\s*[+\-]?\d+$/.test(part)||/^[+\-]\d+$/.test(part))out.bonus=part;
-    else out.special.push(part);
+    else {
+      const special=part.replace(/\bRuido\s+\d+\b/gi,"").replace(/^[\s,;]+|[\s,;]+$/g,"");
+      if(special)out.special.push(special);
+    }
   }
   out.special=out.special.join(", ")||"—";
   return out;
@@ -79,9 +83,11 @@ function weaponArtwork(name,desc,attachments=[]){
 }
 function weaponVisual(weapon,member){
   const desc=weaponRuleText(weapon); const p=parseWeaponProfile(weapon.name,desc); const ammo=ammoCount(weapon);
+  const attachments=member?weaponAttachments(member,weapon):[];
+  const noise=attachments.includes("Silenciador")?Math.max(0,p.noise-1):p.noise;
   const bayonet=["Fusil Militar","Fusil de Combate","Fusil de Asalto"].includes(weapon.name)?parseWeaponProfile("Arma CC Ligera"):null;
-  const bayonetRow=bayonet?`<div class="visual-stat-table weapon-stats bayonet-stats"><div><span>Alcance</span><b>${escapeHtml(bayonet.range)}</b></div><div><span>Bono</span><b>${escapeHtml(bayonet.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(bayonet.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(bayonet.dice)}</b></div><div class="special"><span>Especial</span><b>Bayoneta</b></div></div>`:"";
-  return `<div class="visual-item-card"><div class="visual-item-head${WEAPON_ART[weapon.name]?" illustrated-weapon":""}">${weaponArtwork(weapon.name,desc,member?weaponAttachments(member,weapon):[])}<div><b>${escapeHtml(weapon.name)}</b>${ammo?`<span>${ammo} proyectiles</span>`:""}</div></div><div class="visual-stat-table weapon-stats"><div><span>Alcance</span><b>${escapeHtml(p.range)}</b></div><div><span>Bono</span><b>${escapeHtml(p.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(p.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(p.dice)}</b></div><div class="special"><span>Especial</span><b>${escapeHtml(p.special)}</b></div></div>${bayonetRow}${member?weaponAttachments(member,weapon).map(item=>fullRow(item,LAZARUS_DATA.gearText[item],"",gearArtwork(item))).join(""):""}${ammo?`<div class="ammo-counter" role="img" aria-label="${ammo} proyectiles">${'<svg class="ammo-bullet" viewBox="0 0 12 28" aria-hidden="true"><path d="M3 10V7Q3 3 6 1Q9 3 9 7V10M2 10H10V24H2ZM1 24H11V27H1Z"/></svg>'.repeat(ammo)}</div>`:""}</div>`;
+  const bayonetRow=bayonet?`<div class="visual-stat-table weapon-stats bayonet-stats"><div><span>Alcance</span><b>${escapeHtml(bayonet.range)}</b></div><div><span>Bono</span><b>${escapeHtml(bayonet.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(bayonet.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(bayonet.dice)}</b></div><div><span>Ruido</span><b>${bayonet.noise}</b></div><div class="special"><span>Especial</span><b>Bayoneta</b></div></div>`:"";
+  return `<div class="visual-item-card"><div class="visual-item-head${WEAPON_ART[weapon.name]?" illustrated-weapon":""}">${weaponArtwork(weapon.name,desc,member?weaponAttachments(member,weapon):[])}<div><b>${escapeHtml(weapon.name)}</b>${ammo?`<span>${ammo} proyectiles</span>`:""}</div></div><div class="visual-stat-table weapon-stats"><div><span>Alcance</span><b>${escapeHtml(p.range)}</b></div><div><span>Bono</span><b>${escapeHtml(p.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(p.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(p.dice)}</b></div><div><span>Ruido</span><b${noise!==p.noise?' class="modified-noise" title="Ruido reducido en 1 por el silenciador"':""}>${noise}</b></div><div class="special"><span>Especial</span><b>${escapeHtml(p.special)}</b></div></div>${bayonetRow}${member?weaponAttachments(member,weapon).map(item=>fullRow(item,LAZARUS_DATA.gearText[item],"",gearArtwork(item))).join(""):""}${ammo?`<div class="ammo-counter" role="img" aria-label="${ammo} proyectiles">${'<svg class="ammo-bullet" viewBox="0 0 12 28" aria-hidden="true"><path d="M3 10V7Q3 3 6 1Q9 3 9 7V10M2 10H10V24H2ZM1 24H11V27H1Z"/></svg>'.repeat(ammo)}</div>`:""}</div>`;
 }
 
 const PROTECTION_ART={"Protección ligera":"proteccion-ligera.png","Armadura primitiva":"armadura-primitiva.png","Blindaje I":"blindaje-i.png","Blindaje II":"blindaje-ii.png","Escudo de Mano":"escudo-mano.png","Escudo Balístico":"escudo-balistico.png"};
@@ -117,7 +123,7 @@ sheetMember=function(member,index){
   const weapons=selectedWeapons.length?'<div class="sheet-items '+(selectedWeapons.length>1?'sheet-pair':'')+'">'+selectedWeapons.map(w=>weaponVisual(w,member)).join('')+'</div>':'';
   const protection=[]; if(member.armor||member.shield){protection.push('<div class="sheet-items sheet-pair">'+(member.armor?protectionVisual("Indumentaria",member.armor):'<div class="visual-empty print-placeholder">Sin indumentaria</div>')+(member.shield?protectionVisual("Escudo",member.shield):'<div class="visual-empty print-placeholder">Sin escudo</div>')+'</div>');}
   const gear=member.gear.filter((item,i)=>item&&!attachmentWeapon(member,i)).map(item=>fullRow(item,LAZARUS_DATA.gearText[item],"",gearArtwork(item))).join("")+toolWeapons(member).map(w=>fullRow("Herramienta",TOOL_TEXT,"",'<span class="gear-art"><img src="assets/weapons/arma-cc-pesada.png" width="50" height="50" alt=""></span>')).join("");
-  return `<div class="character-page"><article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(state.name||"Banda sin nombre")}</span></div><div class="character-points character-role"><b>${escapeHtml(member.profile)}</b></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",'<div class="sheet-pair sheet-traits">'+(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>')+'</div>')}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear)}</article></div>`;
+  return `<div class="character-page"><article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(state.name||"Banda sin nombre")}</span></div><div class="character-points character-role"><b>${escapeHtml(member.profile)}</b></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",'<div class="sheet-pair sheet-traits">'+(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>')+'</div>')}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear?'<div class="sheet-gear">'+gear+'</div>':"")}</article></div>`;
 };
 function costBreakdownSheet(){
   const b=band();

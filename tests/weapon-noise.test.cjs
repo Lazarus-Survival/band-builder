@@ -1,0 +1,21 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const path=require('node:path');
+const context=vm.createContext({assert,state:{bandKey:'civiles'},ammoCount:()=>0,escapeHtml:v=>String(v??'')});
+for(const file of ['data.js','loadout-rules.js','card-visuals.js'])vm.runInContext(fs.readFileSync(path.join(__dirname,'..',file),'utf8').split('const renderSummaryBeforeCosts=')[0],context);
+vm.runInContext(String.raw`
+for(const [name,expected] of [['Arma CC Ligera',0],['Motosierra',1],['Pistola de Clavos',1],['Subfusil',1],['Arco de Caza',0],['Escopeta',2]])assert.equal(parseWeaponProfile(name).noise,expected,name);
+for(const name of Object.keys(LAZARUS_DATA.weapons))assert.doesNotMatch(parseWeaponProfile(name).special,/Ruido/i);
+assert.equal(parseWeaponProfile('Motosierra').special,'Herramienta+');
+const pistol={id:'p',name:'Pistola Ligera'},rifle={id:'r',name:'Fusil de Asalto'};
+const member={weapons:[pistol,rifle],gear:['Silenciador'],gearTargets:['p']};
+assert.match(weaponVisual(pistol,member),/class="modified-noise"[^>]*>0<\/b>/);
+assert.doesNotMatch(weaponVisual(rifle,member),/modified-noise/);
+member.gearTargets=['r'];
+assert.doesNotMatch(weaponVisual(pistol,member),/modified-noise/);
+assert.match(weaponVisual(rifle,member),/class="modified-noise"[^>]*>0<\/b>/);
+member.gearTargets=[''];
+assert.doesNotMatch(weaponVisual(rifle,member),/modified-noise/);
+`,context);
+console.log('Weapon noise defaults, special rules and attachment changes passed');

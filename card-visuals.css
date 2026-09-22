@@ -15,7 +15,7 @@
 .visual-info-title{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.visual-info-title b{font-size:.82rem;text-transform:uppercase}.visual-info-copy p{margin:2px 0 0;font-size:.72rem;line-height:1.32;color:#4a4b45}.visual-points{font-size:.62rem;font-weight:900;color:#596443}.visual-points.negative{color:#8a3b35}
 .visual-item-card{margin:8px;border:1px solid #b9b5aa;border-radius:5px;overflow:hidden;background:#fffdf7}.visual-item-card+.visual-item-card{margin-top:10px}
 .visual-item-head{display:grid;grid-template-columns:58px 1fr;gap:9px;align-items:center;padding:8px}.visual-item-head>div{display:grid;gap:2px}.visual-item-head b{font-size:.9rem;text-transform:uppercase}.visual-item-head span:not(.item-icon){font-size:.69rem;color:#5f605a}.visual-kicker{text-transform:uppercase;font-weight:900;letter-spacing:.04em;color:#7b7a72!important}
-.visual-stat-table{display:grid;border-top:1px solid #a6a298}.visual-stat-table div{text-align:center;border-right:1px solid #a6a298;padding:5px 3px}.visual-stat-table div:last-child{border-right:0}.visual-stat-table span{display:block;font-size:.61rem;font-weight:900;text-transform:uppercase;color:#585a53}.visual-stat-table b{display:block;font-size:.76rem;margin-top:2px;line-height:1.15}.weapon-stats{grid-template-columns:.9fr .7fr .7fr .65fr 1.65fr}.protection-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.visual-stat-table .special b{font-size:.66rem;font-weight:800}.visual-empty{padding:10px;color:#8b887f;font-size:.72rem}
+.visual-stat-table{display:grid;border-top:1px solid #a6a298}.visual-stat-table div{text-align:center;border-right:1px solid #a6a298;padding:5px 3px}.visual-stat-table div:last-child{border-right:0}.visual-stat-table span{display:block;font-size:.61rem;font-weight:900;text-transform:uppercase;color:#585a53}.visual-stat-table b{display:block;font-size:.76rem;margin-top:2px;line-height:1.15}.weapon-stats{grid-template-columns:.9fr .7fr .7fr .65fr .65fr 1.65fr}.protection-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.visual-stat-table .special b{font-size:.66rem;font-weight:800}.visual-empty{padding:10px;color:#8b887f;font-size:.72rem}
 @media(max-width:620px){.visual-attributes{grid-template-columns:repeat(4,1fr)}.visual-attributes div{border-bottom:1px solid #aaa69a}.weapon-stats{grid-template-columns:repeat(2,1fr)}.visual-stat-table .special{grid-column:1/-1;border-top:1px solid #a6a298}.character-card-head h4{font-size:1rem}}
 @media print{.character-card{break-inside:avoid;box-shadow:none}.visual-section{break-inside:avoid}.item-icon{-webkit-print-color-adjust:exact;print-color-adjust:exact}.character-card-head,.visual-section-title,.character-points{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 
@@ -49,9 +49,9 @@
 .sheet-items .visual-item-head{min-height:66px;grid-template-columns:50px minmax(0,1fr)}
 .sheet-items .illustrated-weapon{grid-template-columns:100px minmax(0,1fr)}
 .sheet-items .visual-item-head>div{min-width:0;overflow-wrap:anywhere}
-.sheet-pair .weapon-stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+.sheet-pair .weapon-stats{grid-template-columns:repeat(5,minmax(0,1fr))}
 .sheet-pair .weapon-stats .special{grid-column:1/-1;border-top:1px solid #a6a298;border-right:0}
-.sheet-pair .weapon-stats>div:nth-child(4){border-right:0}
+.sheet-pair .weapon-stats>div:nth-child(5){border-right:0}
 .print-placeholder{display:block}
 .screen-section-heading{display:none}
 .visual-section-title:has(.print-section-heading){padding:0}
@@ -73,3 +73,12 @@
 }
 
 .gear-art,.gear-art img{display:block;width:50px;height:50px}.gear-art img{object-fit:contain;image-rendering:auto;mix-blend-mode:multiply}
+
+.modified-noise{color:#23723b;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.sheet-gear{display:contents}
+@media print{
+  .sheet-gear{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+  .sheet-gear>.visual-info-row{grid-template-columns:50px minmax(0,1fr);align-items:start;min-width:0}
+  .sheet-gear>.visual-info-row:nth-child(-n+2){border-top:0}
+  .sheet-gear>.visual-info-row:nth-child(even){border-left:1px solid #c9c4b8}
+}
