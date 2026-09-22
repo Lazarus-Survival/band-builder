@@ -97,9 +97,9 @@ const LAZARUS_DATA = {
     "Visión Nocturna": "Permite ver en la oscuridad a cualquier distancia; -1 a Disparo.",
     "Visión Termal": "Permite ver en la oscuridad sin penalizador; no detecta zombis más allá del alcance nocturno normal.",
     "Botiquín": "5 usos; permite usar Primeros Auxilios.",
-    "Silenciador": "Reduce el Ruido en 1 en armas compatibles.",
-    "Visor Óptico": "Permite disparar en Semiautomático sin el penalizador habitual en armas compatibles.",
-    "Mira Telescópica": "Gastando una acción de apuntar, +1 dado de daño en armas compatibles.",
+    "Silenciador": "Reduce el Ruido en 1.",
+    "Visor Óptico": "Permite disparar en Semiautomático sin el penalizador habitual.",
+    "Mira Telescópica": "Gastando una acción de apuntar, +1 dado de daño.",
     "Mochila grande": "Permite llevar 2 marcadores de botín en lugar de 1."
   },
   armorText: {
