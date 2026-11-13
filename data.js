@@ -1,5 +1,19 @@
 const LAZARUS_DATA = {
   traits: {
+    "Acechante Nocturno": { text: "En combate nocturno, su distancia de visión es de 50 cm en lugar de 30 cm." },
+    "Brazo Fuerte": { text: "Suma 5 cm al alcance de las armas arrojadizas por cada punto de FUE por encima de 3." },
+    "Control de Multitudes": { text: "+1 a COM si le superan en número los enemigos que le atacan en CC." },
+    "Fuego en Movimiento": { text: "Puede mover 2D3 en cualquier dirección después de una tirada de fuego semiautomático o ráfaga." },
+    "Forzudo": { text: "Tira un dado extra de Daño en CC con cualquier arma." },
+    "Grande": { text: "El perro gana +1 a FUE, COM y PV." },
+    "Mecánico": { text: "" },
+    "Némesis": { text: "Al desplegar, elige una figura de la otra banda. Gana +1 a COM contra esa figura." },
+    "Pirómano": { text: "Repite las tiradas para impactar con Cóctel Molotov, Lanzallamas Casero o Lanzallamas." },
+    "Placador": { text: "+2 a las acciones de Derribar." },
+    "Protector": { text: "Si un aliado a 5 cm o menos sufre daño en CC y el perro está libre, intercambia sus posiciones y el perro recibe el daño." },
+    "Puños de Piedra": { text: "Usa el atributo de Arma CC Ligera al atacar en CC sin armas." },
+    "Sucio": { text: "+1 a COM al atacar a una figura ya trabada, derribada o acorralada." },
+    "Tirador Selecto": { text: "" },
     "": { cost: 0, text: "Sin dote." },
     "Akimbo": { text: "Dispara dos armas tipo pistola sin penalizador" },
     "Artes Marciales": { text: "Repite fallos al impactar y dañar en cuerpo a cuerpo." },
@@ -37,6 +51,12 @@ const LAZARUS_DATA = {
     "Vista de águila": { text: "Cancela el -1 por disparar a un combate cuerpo a cuerpo." }
   },
   flaws: {
+    "Adversario": { text: "Elige otra figura de tu banda. Ambas sufren -1 a sus chequeos de atributos cuando están a 10 cm o menos entre sí." },
+    "Dependiente": { text: "Designa a un compañero al desplegar. Ambos sufren -1 a sus chequeos de atributos si están a más de 15 cm entre sí." },
+    "Inválido": { text: "Usa silla de ruedas. No puede cargar, trepar, saltar, ocultarse, conducir, subir escaleras ni llevar armas de CC a dos manos." },
+    "Mal Olor": { text: "Zombis y perros pueden verlo incluso cuando está Oculto." },
+    "Menudo": { text: "Sus ataques en CC requieren un punto más en la tirada de Daño." },
+    "Tuerto": { text: "-2 a COM." },
     "": { cost: 0, text: "Sin defecto." },
     "Activista Z": { text: "No ataca a un zombi salvo que ese zombi le haya atacado antes. No chequea Miedo por zombis." },
     "Adicción": { text: "Al inicio de su activación chequea MOR con penalizador según nivel; si falla pierde la primera acción." },
@@ -116,17 +136,17 @@ const LAZARUS_DATA = {
     civiles: {
       name: "Civiles",
       profiles: {
-        "Líder": { max: 1, leader: true, stats: [4,4,5,6,5,4,5], cost: 55 },
-        "Secuaz": { max: 2, stats: [4,4,4,5,5,4,4], cost: 40 },
-        "Recluta": { max: 4, stats: [3,3,4,4,4,3,3], cost: 20 },
+        "Líder": { max: 1, leader: true, stats: [4,4,5,6,5,4,5], cost: 50 },
+        "Secuaz": { max: 2, stats: [4,4,4,5,5,4,4], cost: 35 },
+        "Recluta": { max: 4, stats: [3,3,4,4,4,3,3], cost: 18 },
         "Niño": { max: 1, child: true, stats: [2,3,2,4,3,3,2], cost: 10 },
-        "Perro": { max: 1, dog: true, stats: [4,"-",4,6,3,6,2], cost: 15 }
+        "Perro": { max: 1, dog: true, stats: [4,"-",4,6,3,6,2], cost: 12 }
       },
-      traits: { "Akimbo":5,"Artes Marciales":30,"Atleta":15,"Ave de Carroña":5,"Berserker":10,"Cazador de Zombis":5,"Conductor experto":15,"Conocimiento de la situación":15,"Desarmar":20,"Despiadado":20,"Duelista":10,"Duro de Pelar":20,"Emboscador":10,"Entrenado":10,"Escurridizo":5,"Especialista en entradas":5,"Esquiva":25,"Explorador":10,"Fanático":10,"Furtivo":10,"Hombre de Confianza":5,"Inspirador":30,"Ladrón de Coches":10,"Matador de Zombis":10,"Nervios de Acero":15,"Parkour":10,"Pistolero":10,"Primeros Auxilios":10,"Puntería":30,"Reacción rápida":10,"Táctico":10,"Vista de águila":10 },
-      flaws: { "Activista Z":20,"Adicción":10,"Alucinaciones":40,"Bajo de Forma":15,"Cojo":20,"Corto de vista":10,"Depresivo":10,"Egoísta":30,"Gafe":10,"Honorable":20,"Imprudente":10,"Manco":20,"Miedoso":15,"Paranoico":20,"Rencoroso":20,"Suicida":30,"Turbio":5,"Lobo Solitario":10,"Viejo":30 },
-      armor: { "Protección ligera":3,"Armadura primitiva":6,"Blindaje I":15,"Blindaje II":25,"Escudo de Mano":6,"Escudo Balístico":35 },
-      weapons: { "Arma CC Ligera":1,"Arma CC Pesada":3,"Espada":5,"Arma a dos manos":5,"Katana o Mandoble":7,"Lanza":3,"Motosierra":12,"Bastón":5,"Pistola .22":6,"Pistola Ligera":8,"Pistola Pesada":10,"Pistola de Clavos":8,"Escopeta Recortada":10,"Pistola Ametralladora":8,"Fusil .22":9,"Fusil de Caza":12,"Fusil de Combate":16,"Escopeta":12,"Subfusil":10,"Carabina":14,"Fusil de Asalto":18,"Ametralladora Ligera":25,"Honda":3,"Arco de Caza":6,"Arco de Poleas/Ballesta":10,"Rifle Submarino":10 },
-      gear: { "Linterna":1,"Linterna Manos libres":2,"Foco halógeno":3,"Cuerda y gancho":2,"Visión Nocturna":10,"Botiquín":5,"Silenciador":5,"Visor Óptico":10,"Mira Telescópica":15,"Mochila grande":2 }
+      traits: { "Akimbo":5,"Artes Marciales":25,"Atleta":10,"Ave de Carroña":5,"Berserker":10,"Cazador de Zombis":5,"Conductor experto":15,"Conocimiento de la situación":20,"Desarmar":20,"Despiadado":15,"Duelista":5,"Duro de Pelar":5,"Emboscador":5,"Entrenado":10,"Escurridizo":5,"Especialista en entradas":5,"Esquiva":15,"Explorador":10,"Fanático":10,"Furtivo":10,"Hombre de Confianza":5,"Inspirador":30,"Ladrón de Coches":10,"Matador de Zombis":10,"Nervios de Acero":10,"Parkour":10,"Pistolero":10,"Primeros Auxilios":5,"Puntería":30,"Reacción rápida":5,"Táctico":10,"Vista de águila":5,"Acechante Nocturno":5,"Control de Multitudes":10,"Fuego en Movimiento":10,"Forzudo":10,"Mecánico":10,"Némesis":5,"Pirómano":5,"Placador":5,"Puños de Piedra":5,"Sigiloso":10,"Sucio":5,"Tirador Selecto":15 },
+      flaws: { "Activista Z":10,"Adicción":10,"Alucinaciones":30,"Bajo de Forma":15,"Cojo":20,"Corto de vista":10,"Depresivo":10,"Egoísta":20,"Gafe":10,"Honorable":25,"Imprudente":10,"Manco":15,"Miedoso":15,"Paranoico":20,"Rencoroso":15,"Suicida":25,"Turbio":5,"Lobo Solitario":10,"Viejo":30,"Adversario":5,"Dependiente":15,"Inválido":40,"Mal Olor":10,"Tuerto":10 },
+      armor: { "Protección ligera":2,"Armadura primitiva":5,"Blindaje I":10,"Blindaje II":20,"Escudo de Mano":4,"Escudo Balístico":30 },
+      weapons: { "Arma CC Ligera":1,"Arma CC Pesada":3,"Espada":5,"Arma a dos manos":5,"Katana o Mandoble":7,"Lanza":3,"Motosierra":10,"Bastón":4,"Pistola .22":5,"Pistola Ligera":7,"Pistola Pesada":10,"Pistola de Clavos":6,"Escopeta Recortada":8,"Pistola Ametralladora":8,"Fusil .22":9,"Fusil de Caza":12,"Fusil de Combate":16,"Escopeta":10,"Subfusil":10,"Carabina":12,"Fusil de Asalto":14,"Ametralladora Ligera":25,"Honda":3,"Arco de Caza":6,"Arco de Poleas/Ballesta":10,"Rifle Submarino":8 },
+      gear: { "Linterna":1,"Linterna Manos libres":2,"Foco halógeno":3,"Cuerda y gancho":2,"Visión Nocturna":8,"Botiquín":5,"Silenciador":5,"Visor Óptico":5,"Mira Telescópica":10,"Mochila grande":2 }
     },
     desertores: {
       name: "Desertores",
