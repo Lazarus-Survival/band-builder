@@ -1,6 +1,7 @@
 const LAZARUS_DATA = {
   traits: {
     "": { cost: 0, text: "Sin dote." },
+    "Akimbo": { text: "" },
     "Artes Marciales": { text: "Repite fallos al impactar y dañar en cuerpo a cuerpo." },
     "Atleta": { text: "+2 PR." },
     "Ave de Carroña": { text: "Repite la tirada de botín." },
@@ -121,7 +122,7 @@ const LAZARUS_DATA = {
         "Niño": { max: 1, child: true, stats: [2,3,2,4,3,3,2], cost: 10 },
         "Perro": { max: 1, dog: true, stats: [4,"-",4,6,3,6,2], cost: 15 }
       },
-      traits: { "Artes Marciales":30,"Atleta":15,"Ave de Carroña":5,"Berserker":10,"Cazador de Zombis":5,"Conductor experto":15,"Conocimiento de la situación":15,"Desarmar":20,"Despiadado":20,"Duelista":10,"Duro de Pelar":20,"Emboscador":10,"Entrenado":10,"Escurridizo":5,"Especialista en entradas":5,"Esquiva":25,"Explorador":10,"Fanático":10,"Furtivo":10,"Hombre de Confianza":5,"Inspirador":30,"Ladrón de Coches":10,"Matador de Zombis":10,"Nervios de Acero":15,"Parkour":10,"Pistolero":10,"Primeros Auxilios":10,"Puntería":30,"Reacción rápida":10,"Táctico":10,"Vista de águila":10 },
+      traits: { "Akimbo":5,"Artes Marciales":30,"Atleta":15,"Ave de Carroña":5,"Berserker":10,"Cazador de Zombis":5,"Conductor experto":15,"Conocimiento de la situación":15,"Desarmar":20,"Despiadado":20,"Duelista":10,"Duro de Pelar":20,"Emboscador":10,"Entrenado":10,"Escurridizo":5,"Especialista en entradas":5,"Esquiva":25,"Explorador":10,"Fanático":10,"Furtivo":10,"Hombre de Confianza":5,"Inspirador":30,"Ladrón de Coches":10,"Matador de Zombis":10,"Nervios de Acero":15,"Parkour":10,"Pistolero":10,"Primeros Auxilios":10,"Puntería":30,"Reacción rápida":10,"Táctico":10,"Vista de águila":10 },
       flaws: { "Activista Z":20,"Adicción":10,"Alucinaciones":40,"Bajo de Forma":15,"Cojo":20,"Corto de vista":10,"Depresivo":10,"Egoísta":30,"Gafe":10,"Honorable":20,"Imprudente":10,"Manco":20,"Miedoso":15,"Paranoico":20,"Rencoroso":20,"Suicida":30,"Turbio":5,"Lobo Solitario":10,"Viejo":30 },
       armor: { "Protección ligera":3,"Armadura primitiva":6,"Blindaje I":15,"Blindaje II":25,"Escudo de Mano":6,"Escudo Balístico":35 },
       weapons: { "Arma CC Ligera":1,"Arma CC Pesada":3,"Espada":5,"Arma a dos manos":5,"Katana o Mandoble":7,"Lanza":3,"Motosierra":12,"Bastón":5,"Pistola .22":6,"Pistola Ligera":8,"Pistola Pesada":10,"Pistola de Clavos":8,"Escopeta Recortada":10,"Pistola Ametralladora":8,"Fusil .22":9,"Fusil de Caza":12,"Fusil de Combate":16,"Escopeta":12,"Subfusil":10,"Carabina":14,"Fusil de Asalto":18,"Ametralladora Ligera":25,"Honda":3,"Arco de Caza":6,"Arco de Poleas/Ballesta":10,"Rifle Submarino":10 },
@@ -135,7 +136,7 @@ const LAZARUS_DATA = {
         "Recluta": { max: 2, stats: [3,4,4,3,4,3,3], cost: 20 },
         "Unidad Canina": { max: 1, dog: true, stats: [4,"-",4,6,3,6,2], cost: 15 }
       },
-      traits: { "Artes Marciales":20,"Atleta":10,"Conductor experto":15,"Conocimiento de la situación":15,"Desarmar":20,"Duro de Pelar":20,"Emboscador":10,"Entrenado":5,"Especialista en entradas":5,"Esquiva":25,"Explorador":10,"Inspirador":30,"Nervios de Acero":15,"Primeros Auxilios":10,"Puntería":30,"Reacción rápida":10,"Táctico":10,"Vista de águila":10 },
+      traits: { "Akimbo":5,"Artes Marciales":20,"Atleta":10,"Conductor experto":15,"Conocimiento de la situación":15,"Desarmar":20,"Duro de Pelar":20,"Emboscador":10,"Entrenado":5,"Especialista en entradas":5,"Esquiva":25,"Explorador":10,"Inspirador":30,"Nervios de Acero":15,"Primeros Auxilios":10,"Puntería":30,"Reacción rápida":10,"Táctico":10,"Vista de águila":10 },
       flaws: { "Adicción":10,"Depresivo":10,"Egoísta":30,"Gafe":10,"Honorable":20,"Imprudente":10,"Paranoico":20,"Rencoroso":20,"Suicida":30,"Lobo Solitario":10 },
       armor: { "Blindaje I":12,"Blindaje II":20,"Escudo Balístico":30 },
       weapons: { "Arma CC Ligera":1,"Pistola Ligera":8,"Pistola Pesada":10,"Fusil de Combate":15,"Subfusil":8,"Escopeta":10,"Escopeta Militar":14,"Carabina":12,"Fusil de Asalto":15,"Ametralladora Ligera":20 },
@@ -148,7 +149,7 @@ const LAZARUS_DATA = {
         "Matón": { max: 3, stats: [4,4,5,4,5,4,4], cost: 40 },
         "Aspirante": { max: 3, stats: [3,3,5,3,4,3,3], cost: 20 }
       },
-      traits: { "Ave de Carroña":5,"Conductor experto":10,"Conocimiento de la situación":10,"Desarmar":20,"Despiadado":20,"Duro de Pelar":15,"Emboscador":10,"Entrenado":10,"Especialista en entradas":5,"Esquiva":25,"Furtivo":10,"Hombre de Confianza":10,"Ladrón de Coches":5,"Nervios de Acero":10,"Pistolero":5,"Primeros Auxilios":10,"Reacción rápida":10,"Vista de águila":10 },
+      traits: { "Akimbo":5,"Ave de Carroña":5,"Conductor experto":10,"Conocimiento de la situación":10,"Desarmar":20,"Despiadado":20,"Duro de Pelar":15,"Emboscador":10,"Entrenado":10,"Especialista en entradas":5,"Esquiva":25,"Furtivo":10,"Hombre de Confianza":10,"Ladrón de Coches":5,"Nervios de Acero":10,"Pistolero":5,"Primeros Auxilios":10,"Reacción rápida":10,"Vista de águila":10 },
       flaws: { "Adicción":10,"Alucinaciones":40,"Bajo de Forma":15,"Cojo":20,"Corto de vista":10,"Depresivo":10,"Egoísta":30,"Gafe":10,"Imprudente":10,"Manco":20,"Paranoico":20,"Rencoroso":20,"Lobo Solitario":10 },
       armor: { "Protección ligera":3,"Blindaje I":12 },
       weapons: { "Arma CC Ligera":1,"Arma CC Pesada":3,"Espada":5,"Arma a dos manos":5,"Pistola .22":6,"Pistola Ligera":8,"Pistola Pesada":10,"Escopeta Recortada":10,"Pistola Ametralladora":8,"Escopeta":12,"Subfusil":10,"Carabina":14,"Fusil de Asalto":18 },
@@ -161,7 +162,7 @@ const LAZARUS_DATA = {
         "Iniciado": { max: 2, stats: [4,4,4,4,6,4,4], cost: 40 },
         "Acólito": { max: 5, stats: [3,3,4,3,5,3,3], cost: 20 }
       },
-      traits: { "Atleta":15,"Berserker":10,"Conocimiento de la situación":15,"Desarmar":20,"Despiadado":20,"Duro de Pelar":20,"Emboscador":10,"Entrenado":10,"Especialista en entradas":5,"Esquiva":25,"Fanático":5,"Furtivo":10,"Inspirador":20,"Mártir":15,"Nervios de Acero":15,"Primeros Auxilios":10,"Puntería":30,"Reacción rápida":10,"Táctico":10,"Vista de águila":10 },
+      traits: { "Akimbo":5,"Atleta":15,"Berserker":10,"Conocimiento de la situación":15,"Desarmar":20,"Despiadado":20,"Duro de Pelar":20,"Emboscador":10,"Entrenado":10,"Especialista en entradas":5,"Esquiva":25,"Fanático":5,"Furtivo":10,"Inspirador":20,"Mártir":15,"Nervios de Acero":15,"Primeros Auxilios":10,"Puntería":30,"Reacción rápida":10,"Táctico":10,"Vista de águila":10 },
       flaws: { "Bajo de Forma":15,"Cojo":20,"Corto de vista":10,"Egoísta":30,"Gafe":10,"Honorable":20,"Imprudente":10,"Manco":20,"Rencoroso":20,"Lobo Solitario":10,"Viejo":30 },
       armor: { "Protección ligera":3,"Blindaje I":15 },
       weapons: { "Arma CC Ligera":1,"Arma CC Pesada":3,"Espada":5,"Arma a dos manos":5,"Katana o Mandoble":7,"Bastón":3,"Pistola Ligera":8,"Pistola Pesada":10,"Escopeta Recortada":10,"Pistola Ametralladora":8,"Fusil de Caza":12,"Escopeta":12,"Subfusil":10,"Carabina":14,"Fusil de Asalto":18,"Ametralladora Ligera":25 },
@@ -175,7 +176,7 @@ const LAZARUS_DATA = {
         "Operativo": { max: 3, stats: [2,4,3,3,4,3,4], cost: 15 },
         "Sujeto Experimental": { max: 2, special: true, stats: [3,"-",2,3,"-","-",1], cost: 10 }
       },
-      traits: { "Artes Marciales":30,"Atleta":15,"Conductor experto":15,"Conocimiento de la situación":15,"Desarmar":20,"Despiadado":20,"Entrenado":10,"Especialista en entradas":5,"Esquiva":25,"Explorador":10,"Hombre de Confianza":5,"Inspirador":30,"Nervios de Acero":15,"Primeros Auxilios":10,"Puntería":30,"Reacción rápida":10,"Táctico":10,"Vista de águila":10 },
+      traits: { "Akimbo":5,"Artes Marciales":30,"Atleta":15,"Conductor experto":15,"Conocimiento de la situación":15,"Desarmar":20,"Despiadado":20,"Entrenado":10,"Especialista en entradas":5,"Esquiva":25,"Explorador":10,"Hombre de Confianza":5,"Inspirador":30,"Nervios de Acero":15,"Primeros Auxilios":10,"Puntería":30,"Reacción rápida":10,"Táctico":10,"Vista de águila":10 },
       flaws: { "Adicción":10,"Bajo de Forma":15,"Corto de vista":10,"Depresivo":10,"Egoísta":30,"Gafe":10,"Imprudente":10,"Manco":20,"Miedoso":15,"Rencoroso":20,"Lobo Solitario":10 },
       armor: { "Blindaje I":15,"Blindaje II":25 },
       weapons: { "Arma CC Ligera":1,"Arma CC Pesada":3,"Pistola Ligera":8,"Pistola Ametralladora":8,"Subfusil":10,"Carabina":14,"Fusil de Asalto":18,"Lanzallamas":12 },
@@ -189,7 +190,7 @@ const LAZARUS_DATA = {
         "Beta": { max: 4, stats: [4,2,4,3,4,4,4], cost: 20 },
         "Perro": { max: 2, dog: true, stats: [4,"-",4,6,4,6,2], cost: 15 }
       },
-      traits: { "Acechante Nocturno":5,"Artes Marciales":30,"Atleta":15,"Ave de Carroña":5,"Berserker":5,"Cazador de Zombis":5,"Conocimiento de la situación":15,"Desarmar":20,"Despiadado":20,"Duro de Pelar":20,"Emboscador":10,"Escurridizo":5,"Especialista en entradas":5,"Esquiva":25,"Explorador":5,"Fanático":10,"Furtivo":10,"Hombre de Confianza":10,"Matador de Zombis":10,"Nervios de Acero":15,"Reacción rápida":10,"Sigiloso":10 },
+      traits: { "Akimbo":5,"Acechante Nocturno":5,"Artes Marciales":30,"Atleta":15,"Ave de Carroña":5,"Berserker":5,"Cazador de Zombis":5,"Conocimiento de la situación":15,"Desarmar":20,"Despiadado":20,"Duro de Pelar":20,"Emboscador":10,"Escurridizo":5,"Especialista en entradas":5,"Esquiva":25,"Explorador":5,"Fanático":10,"Furtivo":10,"Hombre de Confianza":10,"Matador de Zombis":10,"Nervios de Acero":15,"Reacción rápida":10,"Sigiloso":10 },
       flaws: { "Alucinaciones":40,"Corto de vista":5,"Depresivo":10,"Egoísta":30,"Gafe":10,"Honorable":20,"Imprudente":10,"Miedoso":15,"Paranoico":20,"Rencoroso":20,"Suicida":30,"Lobo Solitario":10 },
       armor: { "Protección ligera":2,"Armadura primitiva":5,"Escudo de Mano":4 },
       weapons: { "Arma CC Ligera":1,"Arma CC Pesada":2,"Arma a dos manos":4,"Katana o Mandoble":7,"Lanza":2,"Pistola .22":8,"Pistola Ligera":8,"Honda":1,"Pistola de Clavos":8,"Escopeta Recortada":10,"Arco de Caza":3 },

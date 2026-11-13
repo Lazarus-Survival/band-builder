@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
+  <defs>
+    <path id="pistol" d="M3 4h19v8h-8l-2 4H9l-2 6H1l4-10H3z M10 12l-1 3h2l2-3z" fill-rule="evenodd"/>
+  </defs>
+  <rect width="50" height="50" rx="6" fill="#22251f"/>
+  <g fill="#ede5cf">
+    <use href="#pistol" transform="translate(2 15) rotate(-23 11 8)"/>
+    <use href="#pistol" transform="translate(48 15) scale(-1 1) rotate(-23 11 8)"/>
+  </g>
+</svg>

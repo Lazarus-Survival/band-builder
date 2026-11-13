@@ -1,6 +1,7 @@
-﻿(function installApprovedCardIcons(){
+(function installApprovedCardIcons(){
 const DOTES={
 "Acechante Nocturno":"acechante-nocturno.png",
+"Akimbo":"akimbo.svg",
 "Artes Marciales":"artes-marciales.png",
 "Atleta":"atleta.png",
 "Ave de Carroña":"ave-de-carrona.png",
