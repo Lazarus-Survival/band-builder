@@ -38,7 +38,9 @@ const DOTES={
 
 const DEFECTOS={
 "Activista Z":"activista-z.png",
-"Adicción":"adiccion.png",
+"Adicción I":"adiccion.png",
+"Adicción II":"adiccion.png",
+"Adicción III":"adiccion.png",
 "Alucinaciones":"alucinaciones.png",
 "Bajo de Forma":"bajo-de-forma.png",
 "Cojo":"cojo.png",

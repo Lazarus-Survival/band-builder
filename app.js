@@ -106,7 +106,7 @@ function ammoRule(weaponName){if(!weaponName)return null;return AMMO_RULES[state
 function normalizedAmmoBlocks(weapon){return Math.max(1,Number(weapon.ammoBlocks)||1);}
 function ammoCost(weapon){const rule=ammoRule(weapon.name);if(!rule)return 0;return(normalizedAmmoBlocks(weapon)-1)*rule.cost;}
 function ammoCount(weapon){const rule=ammoRule(weapon.name);return rule?normalizedAmmoBlocks(weapon)*rule.size:null;}
-function repeatedTraitCost(member){if(!member.trait)return 0;const base=band().traits[member.trait]||0;const sameBefore=state.members.slice(0,state.members.indexOf(member)).filter(m=>m.trait===member.trait).length;return base*(2**sameBefore);}
+function repeatedTraitCost(member){if(!member.trait)return 0;const hasFlamethrower=member.trait==="Pirómano"&&member.weapons.some(weapon=>weapon.name==="Lanzallamas");const base=hasFlamethrower?10:band().traits[member.trait]||0;const sameBefore=state.members.slice(0,state.members.indexOf(member)).filter(m=>m.trait===member.trait).length;return base*(2**sameBefore);}
 function repeatedFlawValue(member){if(!member.flaw)return 0;const base=band().flaws[member.flaw]||0;const sameBefore=state.members.slice(0,state.members.indexOf(member)).filter(m=>m.flaw===member.flaw).length;return base/(2**sameBefore);}
 function memberCost(member){const b=band();const p=b.profiles[member.profile];if(!p)return 0;const weaponCost=member.weapons.reduce((sum,weapon)=>sum+(b.weapons[weapon.name]||0)+ammoCost(weapon)+toolCost(weapon),0);const gearCost=member.gear.reduce((sum,item)=>sum+(b.gear[item]||0),0);return p.cost+repeatedTraitCost(member)-repeatedFlawValue(member)+(b.armor[member.armor]||0)+weaponCost+gearCost;}
 function totalCost(){return state.members.reduce((sum,m)=>sum+memberCost(m),0);}
