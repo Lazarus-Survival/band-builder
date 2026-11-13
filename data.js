@@ -1,7 +1,7 @@
 const LAZARUS_DATA = {
   traits: {
     "": { cost: 0, text: "Sin dote." },
-    "Akimbo": { text: "" },
+    "Akimbo": { text: "Dispara dos armas tipo pistola sin penalizador" },
     "Artes Marciales": { text: "Repite fallos al impactar y dañar en cuerpo a cuerpo." },
     "Atleta": { text: "+2 PR." },
     "Ave de Carroña": { text: "Repite la tirada de botín." },
