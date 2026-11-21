@@ -1,7 +1,7 @@
 const state = {
   bandKey: "civiles",
   name: "Mi banda",
-  limit: 250,
+  limit: 200,
   members: []
 };
 
@@ -127,7 +127,7 @@ function sheetMember(member,index){const stats=effectiveStats(member);const deta
 function formatPoints(value){return Number.isInteger(value)?String(value):value.toFixed(1);}
 function escapeHtml(value){return String(value??"").replace(/[&<>'"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'"':"&quot;"}[c]));}
 el.bandName.addEventListener("input",e=>{state.name=e.target.value;renderSummary();});
-el.pointsLimit.addEventListener("input",e=>{state.limit=Math.max(1,Number(e.target.value)||250);renderSummary();});
+el.pointsLimit.addEventListener("input",e=>{state.limit=Math.max(1,Number(e.target.value)||200);renderSummary();});
 el.bandType.addEventListener("change",e=>{state.bandKey=e.target.value;state.members=[];addMember(firstProfile());});
 el.addMember.addEventListener("click",()=>{const profile=firstAvailableProfile();if(profile)addMember(profile);else alert("Has alcanzado el máximo de todos los perfiles disponibles para esta banda.");});
 
