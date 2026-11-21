@@ -43,12 +43,16 @@ function equipmentEntries(member) {
   ].filter(entry => entry.name);
 }
 
-function equipmentCost(member, category, name, item) {
+function equipmentBaseCost(member, category, name, item) {
   const profile = band().profiles[member.profile];
   if (category === 'armor' && profile?.includedArmor === name && item === 'armor') return 0;
-  const base = category === 'armor' && profile?.dog && band().dogArmor
+  return category === 'armor' && profile?.dog && band().dogArmor
     ? band().dogArmor[name] || 0
     : band()[category][name] || 0;
+}
+
+function equipmentCost(member, category, name, item) {
+  const base = equipmentBaseCost(member, category, name, item);
   if (!band().scarce.includes(name)) return base;
   let previous = 0;
   for (const owner of state.members) {
@@ -61,6 +65,30 @@ function equipmentCost(member, category, name, item) {
     }
   }
   return base;
+}
+
+function equipmentLabel(name) {
+  return name + (band().scarce.includes(name) ? ' (!)' : '');
+}
+
+function equipmentOption(member, category, name, item, selected) {
+  let cost = equipmentCost(member, category, name, item);
+  if (name !== selected && band().scarce.includes(name)) {
+    const purchases = state.members.flatMap(owner => equipmentEntries(owner).filter(entry => {
+      const currentSlot = owner === member && entry.category === category && entry.item === item;
+      const included = entry.category === 'armor' && band().profiles[owner.profile]?.includedArmor === entry.name;
+      return !currentSlot && !included && entry.category === category && entry.name === name;
+    })).length;
+    cost = equipmentBaseCost(member, category, name, item) * (1 + 0.5 * purchases);
+  }
+  const unit = LAZARUS_DATA.weapons[name]?.thrown && category === 'weapons' ? ' por unidad' : '';
+  return '<option value="' + escapeHtml(name) + '"' + (name === selected ? ' selected' : '') + '>' +
+    escapeHtml(equipmentLabel(name)) + ' · ' + formatPoints(cost) + ' pts' + unit + '</option>';
+}
+
+function gearOptions(member, index) {
+  return '<option value="">Sin equipo</option>' + Object.keys(band().gear)
+    .map(name => equipmentOption(member, 'gear', name, index, member.gear[index])).join('');
 }
 
 function weaponPurchaseCost(member, weapon) {

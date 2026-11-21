@@ -27,6 +27,8 @@ assert.match(LAZARUS_DATA.traits['Mecánico'].text,/arrancarlos/);
 state.bandKey='civiles';
 const leader=make('Líder',['Granada de mano','Granada de mano','Granada de mano']);
 state.members=[leader];
+assert.ok(equipmentOption(leader,'weapons','Granada de mano',{},'').includes('Granada de mano (!) · 20 pts'));
+assert.match(equipmentOption(leader,'weapons','Granada de mano',leader.weapons[1],'Granada de mano'),/12 pts/);
 assert.equal(memberCost(leader),86); // 50 + 8 + 12 + 16, per-unit scarce purchases.
 leader.weapons.pop();
 assert.equal(memberCost(leader),70);

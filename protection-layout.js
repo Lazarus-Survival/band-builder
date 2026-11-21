@@ -7,9 +7,8 @@ function protectionOptions(kind, selected, member) {
   });
   const emptyLabel = kind === "shield" ? "Sin escudo" : "Sin indumentaria";
   const result = [`<option value="">${emptyLabel}</option>`];
-  for (const [name, baseCost] of entries) {
-    const cost = band().profiles[member.profile]?.dog && band().dogArmor ? band().dogArmor[name] : baseCost;
-    result.push(`<option value="${escapeHtml(name)}" ${name===selected?"selected":""}>${escapeHtml(name)}${cost?` · ${cost} pts`:""}</option>`);
+  for (const [name] of entries) {
+    result.push(equipmentOption(member, "armor", name, kind === "shield" ? "shield" : "armor", selected));
   }
   return result.join("");
 }
@@ -24,12 +23,12 @@ ruleDetails = function(member) {
   if(member.flaw) rows.push(`<div class="rule-line"><b>Defecto · ${escapeHtml(member.flaw)}:</b> ${escapeHtml(LAZARUS_DATA.flaws[member.flaw]?.text||"Consulta el reglamento.")} <em>(-${formatPoints(repeatedFlawValue(member))} pts)</em></div>`);
   for(const weapon of member.weapons.filter(w=>w.name)){
     const ammo=ammoDescription(weapon);
-    rows.push(`<div class="rule-line"><b>Arma · ${escapeHtml(weapon.name)}:</b> ${escapeHtml(weaponRuleText(weapon))}${ammo?` <span class="ammo-note">· ${escapeHtml(ammo)}</span>`:""}</div>`);
+    rows.push(`<div class="rule-line"><b>Arma · ${escapeHtml(equipmentLabel(weapon.name))}:</b> ${escapeHtml(weaponRuleText(weapon))}${ammo?` <span class="ammo-note">· ${escapeHtml(ammo)}</span>`:""}</div>`);
   }
-  if(member.armor) rows.push(`<div class="rule-line"><b>Indumentaria · ${escapeHtml(member.armor)}:</b> ${escapeHtml(LAZARUS_DATA.armorText[member.armor]||"")}</div>`);
-  if(member.shield) rows.push(`<div class="rule-line"><b>Escudo · ${escapeHtml(member.shield)}:</b> ${escapeHtml(LAZARUS_DATA.armorText[member.shield]||"")}</div>`);
+  if(member.armor) rows.push(`<div class="rule-line"><b>Indumentaria · ${escapeHtml(equipmentLabel(member.armor))}:</b> ${escapeHtml(LAZARUS_DATA.armorText[member.armor]||"")}</div>`);
+  if(member.shield) rows.push(`<div class="rule-line"><b>Escudo · ${escapeHtml(equipmentLabel(member.shield))}:</b> ${escapeHtml(LAZARUS_DATA.armorText[member.shield]||"")}</div>`);
   for(const item of member.gear.filter(Boolean)){
-    rows.push(`<div class="rule-line"><b>Equipo · ${escapeHtml(item)}:</b> ${escapeHtml(LAZARUS_DATA.gearText[item]||"")}</div>`);
+    rows.push(`<div class="rule-line"><b>Equipo · ${escapeHtml(equipmentLabel(item))}:</b> ${escapeHtml(LAZARUS_DATA.gearText[item]||"")}</div>`);
   }
   return rows.join("");
 };
@@ -119,6 +118,6 @@ render();
   css.href="card-visuals.css?v=20260922-3";
   document.head.appendChild(css);
   const script=document.createElement("script");
-  script.src="card-visuals.js?v=20261121-1";
+  script.src="card-visuals.js?v=20261121-3";
   document.body.appendChild(script);
 })();
