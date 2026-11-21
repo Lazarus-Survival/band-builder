@@ -8,7 +8,7 @@ function pictogram(name,text=""){
   if(/arco|ballesta/.test(source)) return svgWrap('<path d="M18 8c18 8 18 40 0 48M46 8c-18 8-18 40 0 48M18 8l28 48M46 8L18 56" fill="none" stroke="currentColor" stroke-width="5"/><path d="M31 10h3v44h-3z"/>');
   if(/motosierra/.test(source)) return svgWrap('<rect x="11" y="24" width="30" height="17" rx="4"/><path d="M41 27h12l5 5-5 5H41zM17 41h9v10h-9z"/><circle cx="22" cy="32" r="4"/>');
   if(/katana|mandoble|espada/.test(source)) return svgWrap('<path d="M44 7l8 8-28 28-8-8zM13 39l12 12-5 5L8 44zM29 45l7 7-3 3-7-7z"/>');
-  if(/lanza/.test(source)) return svgWrap('<path d="M11 50L47 14l6 6-36 36z"/><path d="M45 8l11 11-17 5z"/>');
+  if(/lanza/.test(source)&&!/lanzallamas|lanzagranadas/.test(source)) return svgWrap('<path d="M11 50L47 14l6 6-36 36z"/><path d="M45 8l11 11-17 5z"/>');
   if(/lanzallamas/.test(source)) return svgWrap('<path d="M7 28h28v12H7zM35 31h13v6H35z"/><path d="M48 24c7 3 9 7 7 12-2 4-6 6-10 4 4-3 4-6 0-9 4 0 6-3 3-7z"/><rect x="15" y="40" width="7" height="12"/>');
   if(/escudo bal/.test(source)) return svgWrap('<path d="M32 6l21 7v16c0 14-9 24-21 29C20 53 11 43 11 29V13z"/><path d="M32 12v38" fill="none" stroke="white" stroke-width="4" opacity=".55"/>');
   if(/escudo/.test(source)) return svgWrap('<path d="M14 10h36v31L32 57 14 41z"/><rect x="29" y="14" width="6" height="35" fill="white" opacity=".5"/>');
@@ -71,21 +71,21 @@ function fullRow(name,description,extra="",artwork=""){
   return `<div class="visual-info-row">${artwork||iconBadge(name,description)}<div class="visual-info-copy"><div class="visual-info-title"><b>${escapeHtml(name)}</b>${extra}</div><p>${escapeHtml(description||"Consulta el reglamento.")}</p></div></div>`;
 }
 
-const WEAPON_ART={"Escopeta Militar":"escopeta-militar.png","Pistola Ligera":"pistola-ligera.png","Arma CC Ligera":"arma-cc-ligera.png","Fusil de Asalto":"fusil-de-asalto.png","Arma CC Pesada":"arma-cc-pesada.png","Espada":"espada.png","Arma a dos manos":"arma-a-dos-manos.png","Katana o Mandoble":"katana-o-mandoble.png","Lanza":"lanza.png","Motosierra":"motosierra.png","Bastón":"baston.png","Ametralladora Ligera":"ametralladora.png","Arco de Caza":"arco.png","Arco de Poleas/Ballesta":"ballesta.png","Carabina":"carabina.png","Escopeta":"escopeta.png","Fusil .22":"fusil-22.png","Fusil de Caza":"fusil-caza.png","Fusil de Combate":"fusil-combate.png","Lanzallamas":"lanzallamas.png","Rifle Submarino":"rifle-submarino.png","Subfusil":"subfusil.png","Escopeta Recortada":"escopeta-recortada.png","Honda":"honda.png","Pistola .22":"pistola-22.png","Pistola Ametralladora":"pistola-ametralladora.png","Pistola de Clavos":"pistola-clavos.png","Pistola Pesada":"pistola-pesada.png"};
+const WEAPON_ART={"Escopeta Militar":"escopeta-militar.png","Pistola Ligera":"pistola-ligera.png","Arma CC Ligera":"arma-cc-ligera.png","Fusil de Asalto":"fusil-de-asalto.png","Arma CC Pesada":"arma-cc-pesada.png","Espada":"espada.png","Arma a dos manos":"arma-a-dos-manos.png","Katana o Mandoble":"katana-o-mandoble.png","Lanza":"lanza.png","Motosierra":"motosierra.png","Bastón":"baston.png","Ametralladora Ligera":"ametralladora.png","Arco de Caza":"arco.png","Arco de Poleas/Ballesta":"ballesta.png","Carabina":"carabina.png","Escopeta":"escopeta.png","Fusil .22":"fusil-22.png","Fusil Cerrojo":"fusil-caza.png","Fusil Cerrojo Semiautomático":"fusil-caza.png","Fusil .22 Semiautomático":"fusil-22.png","Fusil de Francotirador":"fusil-combate.png","Lanzallamas":"lanzallamas.png","Lanzallamas Casero":"lanzallamas.png","Ballesta Primitiva":"ballesta.png","Rifle Submarino":"rifle-submarino.png","Subfusil":"subfusil.png","Escopeta Recortada":"escopeta-recortada.png","Honda":"honda.png","Pistola .22":"pistola-22.png","Pistola Ametralladora":"pistola-ametralladora.png","Pistola de Clavos":"pistola-clavos.png","Pistola Pesada":"pistola-pesada.png"};
 const WEAPON_ATTACHMENT_ART=new Set(["carabina-silenciador-visor-optico.png", "carabina-silenciador.png", "carabina-visor-optico.png", "fusil-22-mira-telescopica.png", "fusil-22-silenciador-mira-telescopica.png", "fusil-22-silenciador.png", "fusil-caza-mira-telescopica.png", "fusil-caza-silenciador-mira-telescopica.png", "fusil-caza-silenciador.png", "fusil-combate-mira-telescopica.png", "fusil-combate-silenciador-mira-telescopica.png", "fusil-combate-silenciador.png", "fusil-de-asalto-silenciador-visor-optico.png", "fusil-de-asalto-silenciador.png", "fusil-de-asalto-visor-optico.png", "pistola-22-silenciador.png", "pistola-ametralladora-silenciador.png", "pistola-ligera-silenciador.png", "pistola-pesada-silenciador.png", "subfusil-silenciador-visor-optico.png", "subfusil-silenciador.png", "subfusil-visor-optico.png"]);
 function weaponArtwork(name,desc,attachments=[]){
   let file=WEAPON_ART[name];
   const suffix=[['Silenciador','silenciador'],['Visor Óptico','visor-optico'],['Mira Telescópica','mira-telescopica']].filter(([item])=>attachments.includes(item)).map(([,slug])=>slug).join('-');
   const variant=file&&suffix?file.replace('.png','-')+suffix+'.png':'';
   if(WEAPON_ATTACHMENT_ART.has(variant)) file='attachments/'+variant;
-  else if(name==='Fusil de Combate') file+='?v=20260921-2';
+  else if(name==='Fusil de Francotirador') file+='?v=20260921-2';
   return file?'<span class="weapon-art" aria-hidden="true"><img src="assets/weapons/'+file+'" width="100" height="50" alt=""></span>':iconBadge(name,desc);
 }
 function weaponVisual(weapon,member){
   const desc=weaponRuleText(weapon); const p=parseWeaponProfile(weapon.name,desc); const ammo=ammoCount(weapon);
   const attachments=member?weaponAttachments(member,weapon):[];
   const noise=attachments.includes("Silenciador")?Math.max(0,p.noise-1):p.noise;
-  const bayonet=["Fusil Militar","Fusil de Combate","Fusil de Asalto"].includes(weapon.name)?parseWeaponProfile("Arma CC Ligera"):null;
+  const bayonet=band().bayonets?.includes(weapon.name)?parseWeaponProfile("Arma CC Ligera"):null;
   const bayonetRow=bayonet?`<div class="visual-stat-table weapon-stats bayonet-stats"><div><span>Alcance</span><b>${escapeHtml(bayonet.range)}</b></div><div><span>Bono</span><b>${escapeHtml(bayonet.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(bayonet.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(bayonet.dice)}</b></div><div><span>Ruido</span><b>${bayonet.noise}</b></div><div class="special"><span>Especial</span><b>Bayoneta</b></div></div>`:"";
   return `<div class="visual-item-card"><div class="visual-item-head${WEAPON_ART[weapon.name]?" illustrated-weapon":""}">${weaponArtwork(weapon.name,desc,member?weaponAttachments(member,weapon):[])}<div><b>${escapeHtml(weapon.name)}</b>${ammo?`<span>${ammo} proyectiles</span>`:""}</div></div><div class="visual-stat-table weapon-stats"><div><span>Alcance</span><b>${escapeHtml(p.range)}</b></div><div><span>Bono</span><b>${escapeHtml(p.bonus)}</b></div><div><span>Daño</span><b>${escapeHtml(p.damage)}</b></div><div><span>Dados</span><b>${escapeHtml(p.dice)}</b></div><div><span>Ruido</span><b${noise!==p.noise?' class="modified-noise" title="Ruido reducido en 1 por el silenciador"':""}>${noise}</b></div><div class="special"><span>Especial</span><b>${escapeHtml(p.special)}</b></div></div>${bayonetRow}${attachments.length?'<div class="weapon-attachments'+(attachments.length===2?' attachment-pair':'')+'">'+attachments.map(item=>fullRow(item,LAZARUS_DATA.gearText[item],"",gearArtwork(item))).join("")+'</div>':""}${ammo?`<div class="ammo-counter" role="img" aria-label="${ammo} proyectiles">${'<svg class="ammo-bullet" viewBox="0 0 12 28" aria-hidden="true"><path d="M3 10V7Q3 3 6 1Q9 3 9 7V10M2 10H10V24H2ZM1 24H11V27H1Z"/></svg>'.repeat(ammo)}</div>`:""}</div>`;
 }
@@ -117,13 +117,14 @@ function visualSection(title,content,klass=""){
 
 sheetMember=function(member,index){
   const stats=effectiveStats(member);
+  const profileRules=profileSpecialText(member);
   const dote=member.trait?fullRow(member.trait,LAZARUS_DATA.traits[member.trait]?.text):"";
   const defecto=member.flaw?fullRow(member.flaw,LAZARUS_DATA.flaws[member.flaw]?.text):"";
   const selectedWeapons=member.weapons.filter(w=>w.name);
   const weapons=selectedWeapons.length?'<div class="sheet-items '+(selectedWeapons.length>1?'sheet-pair':'')+'">'+selectedWeapons.map(w=>weaponVisual(w,member)).join('')+'</div>':'';
   const protection=[]; if(member.armor||member.shield){protection.push('<div class="sheet-items sheet-pair">'+(member.armor?protectionVisual("Indumentaria",member.armor):'<div class="visual-empty print-placeholder">Sin indumentaria</div>')+(member.shield?protectionVisual("Escudo",member.shield):'<div class="visual-empty print-placeholder">Sin escudo</div>')+'</div>');}
   const gear=member.gear.filter((item,i)=>item&&!attachmentWeapon(member,i)).map(item=>fullRow(item,LAZARUS_DATA.gearText[item],"",gearArtwork(item))).join("")+toolWeapons(member).map(w=>fullRow("Herramienta",TOOL_TEXT,"",'<span class="gear-art"><img src="assets/weapons/arma-cc-pesada.png" width="50" height="50" alt=""></span>')).join("");
-  return `<div class="character-page"><article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(state.name||"Banda sin nombre")}</span></div><div class="character-points character-role"><b>${escapeHtml(member.profile)}</b></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",'<div class="sheet-pair sheet-traits">'+(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>')+'</div>')}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear?'<div class="sheet-gear">'+gear+'</div>':"")}</article></div>`;
+  return `<div class="character-page"><article class="character-card"><header class="character-card-head"><div><h4>${escapeHtml(member.name||`${member.profile} ${index+1}`)}</h4><span>${escapeHtml(state.name||"Banda sin nombre")}</span></div><div class="character-points character-role"><b>${escapeHtml(member.profile)}${band().profiles[member.profile]?.beast?" · Bestia":""}</b></div></header>${visualSection("Atributos",`<div class="visual-attributes">${STAT_NAMES.map((n,i)=>`<div><span>${n}</span><b>${stats[i]??"-"}</b></div>`).join("")}</div>`,"attributes")}${visualSection("Vida / Resistencia",vitalityCounters(stats))}${visualSection("Dote / Defecto",'<div class="sheet-pair sheet-traits">'+(dote||'<div class="visual-empty">—</div>')+(defecto||'<div class="visual-empty">—</div>')+'</div>')}${profileRules?visualSection("Reglas del perfil",escapeHtml(profileRules)):""}${visualSection("Armas",weapons)}${visualSection("Protección",protection.join(""))}${visualSection("Equipo",gear?'<div class="sheet-gear">'+gear+'</div>':"")}</article></div>`;
 };
 function costBreakdownSheet(){
   const b=band();
@@ -132,7 +133,7 @@ function costBreakdownSheet(){
     const add=(label,cost)=>rows.push('<tr><td>'+escapeHtml(label)+'</td><td>'+String(cost)+' pts</td></tr>');
     add('Perfil · '+member.profile,b.profiles[member.profile]?.cost||0);
     if(member.trait){
-      const repeats=state.members.slice(0,index).filter(m=>m.trait===member.trait).length;
+      const repeats=traitRepeats(member);
       const multiplier=2**repeats;
       add('Dote · '+member.trait+(repeats?' (×'+multiplier+')':''),repeatedTraitCost(member));
     }
@@ -141,13 +142,13 @@ function costBreakdownSheet(){
       add('Defecto · '+member.flaw+(repeats?' (÷'+(2**repeats)+')':''),-repeatedFlawValue(member));
     }
     for(const weapon of member.weapons.filter(w=>w.name)){
-      add('Arma · '+weapon.name,b.weapons[weapon.name]||0);
+      add('Arma · '+weapon.name,weaponPurchaseCost(member,weapon));
       if(toolCost(weapon))add('Herramienta · '+weapon.name,toolCost(weapon));
       if(ammoRule(weapon.name))add('Munición · '+weapon.name+' · '+ammoCount(weapon)+' proyectiles'+(ammoCost(weapon)?' (coste adicional)':' (incluidos)'),ammoCost(weapon));
     }
-    if(member.armor)add('Indumentaria · '+member.armor,b.armor[member.armor]||0);
-    if(member.shield)add('Escudo · '+member.shield,b.armor[member.shield]||0);
-    member.gear.forEach((item,i)=>{if(item){const target=attachmentWeapon(member,i);add('Equipo · '+item+(target?' → '+target.name:''),b.gear[item]||0);}});
+    if(member.armor)add('Indumentaria · '+member.armor,protectionCost(member,'armor'));
+    if(member.shield)add('Escudo · '+member.shield,protectionCost(member,'shield'));
+    member.gear.forEach((item,i)=>{if(item){const target=attachmentWeapon(member,i);add('Equipo · '+item+(target?' → '+target.name:''),gearPurchaseCost(member,i));}});
     return '<article class="cost-member"><h4>'+escapeHtml(member.name||member.profile+' '+(index+1))+'</h4><table><thead><tr><th>Concepto</th><th>Coste</th></tr></thead><tbody>'+rows.join('')+'</tbody><tfoot><tr><th>Total del miembro</th><td>'+String(memberCost(member))+' pts</td></tr></tfoot></table></article>';
   }).join('');
   return '<section class="cost-breakdown"><h3>Desglose de costes</h3><p>'+escapeHtml(state.name||'Banda sin nombre')+' · '+escapeHtml(b.name)+'</p>'+members+'<p class="cost-grand-total">Total de la banda: '+String(totalCost())+' / '+String(state.limit)+' pts</p></section>';

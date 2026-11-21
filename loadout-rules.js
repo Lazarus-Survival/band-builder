@@ -1,17 +1,20 @@
 // Band PDFs and Chapter 5, reviewed 2026-09-20; see docs/loadout-rules.md.
-const TOOL_UPGRADE_COST={civiles:1,pandilleros:1,sectarios:1,carroneros:1};
+const TOOL_UPGRADE_COST={civiles:1,pandilleros:1,sectarios:1,carroneros:1,ninos:1,laboratorios:1};
 const TOOL_TEXT='+2 a los chequeos de romper';
 const ATTACHMENT_WEAPONS={
-  'Silenciador':['Pistola .22','Pistola Ligera','Pistola Pesada','Pistola Ametralladora','Subfusil','Fusil .22','Fusil de Caza','Fusil de Combate','Fusil Militar','Fusil de Asalto','Carabina'],
+  'Silenciador':['Pistola .22','Pistola Ligera','Pistola Pesada','Pistola Ametralladora','Subfusil','Fusil .22','Fusil .22 Semiautomático','Fusil Cerrojo','Fusil Cerrojo Semiautomático','Fusil de Francotirador','Fusil de Asalto','Carabina'],
   'Visor Óptico':['Subfusil','Carabina','Fusil de Asalto'],
-  'Mira Telescópica':['Fusil .22','Fusil de Caza','Fusil Militar','Fusil de Combate']
+  'Mira Telescópica':['Fusil .22','Fusil .22 Semiautomático','Fusil Cerrojo','Fusil Cerrojo Semiautomático','Fusil de Francotirador']
 };
-function toolUpgradePrice(weapon){return weapon.name==='Arma CC Pesada'?TOOL_UPGRADE_COST[state.bandKey]??null:null;}
+function toolUpgradePrice(weapon){return ['Arma CC Pesada','Arma a dos manos'].includes(weapon.name)?TOOL_UPGRADE_COST[state.bandKey]??null:null;}
 function toolCost(weapon){return weapon.tool?(toolUpgradePrice(weapon)??0):0;}
-function weaponRuleText(weapon){
-  const text=LAZARUS_DATA.weapons[weapon.name]?.text||'';
-  return weapon.name==='Arma CC Pesada'&&!toolCost(weapon)?text.replace(/,?\s*Herramienta\b/g,''):text;
+function weaponRuleText(weapon) {
+  let text = LAZARUS_DATA.weapons[weapon.name]?.text || '';
+  if (['Arma CC Pesada', 'Arma a dos manos'].includes(weapon.name) && !toolCost(weapon)) text = text.replace(/,?\s*Herramienta\+?/g, '');
+  if (band().bayonets?.includes(weapon.name)) text += ' Bayoneta: puede usarse como Arma CC Ligera.';
+  return text;
 }
+
 function toolWeapons(member){return member.weapons.filter(w=>w.tool&&toolUpgradePrice(w)!==null);}
 function ensureLoadoutIds(member){member.weapons.forEach(w=>{if(!w.id)w.id=uid();});member.gearTargets??=[];}
 function compatibleWeapons(member,item){return member.weapons.filter(w=>ATTACHMENT_WEAPONS[item]?.includes(w.name));}

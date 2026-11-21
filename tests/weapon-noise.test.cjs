@@ -2,7 +2,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
 const path=require('node:path');
-const context=vm.createContext({assert,state:{bandKey:'civiles'},ammoCount:()=>0,escapeHtml:v=>String(v??'')});
+const context=vm.createContext({assert,state:{bandKey:'civiles'},band:()=>({bayonets:[]}),ammoCount:()=>0,escapeHtml:v=>String(v??'')});
 for(const file of ['data.js','loadout-rules.js','card-visuals.js'])vm.runInContext(fs.readFileSync(path.join(__dirname,'..',file),'utf8').split('const renderSummaryBeforeCosts=')[0],context);
 vm.runInContext(String.raw`
 for(const [name,expected] of [['Arma CC Ligera',0],['Motosierra',1],['Pistola de Clavos',1],['Subfusil',1],['Arco de Caza',0],['Escopeta',2]])assert.equal(parseWeaponProfile(name).noise,expected,name);

@@ -7,7 +7,7 @@ const DOTES={
 "Ave de Carroña":"ave-de-carrona.png",
 "Berserker":"berserker.png",
 "Cazador de Zombis":"cazador-de-zombis.png",
-"Conductor experto":"conductor-experto.png",
+"Mecánico":"conductor-experto.png",
 "Conocimiento de la situación":"conocimiento-de-la-situacion.png",
 "Desarmar":"desarmar.png",
 "Despiadado":"despiadado.png",

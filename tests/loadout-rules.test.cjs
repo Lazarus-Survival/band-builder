@@ -5,8 +5,8 @@ const context=vm.createContext({state:{bandKey:'civiles'},uid:()=>Math.random().
 vm.runInContext(fs.readFileSync(require('node:path').join(__dirname,'../loadout-rules.js'),'utf8'),context);
 vm.runInContext(`
 const heavy={id:'heavy',name:'Arma CC Pesada',tool:true};
-for(const key of ['civiles','pandilleros','sectarios','carroneros']){state.bandKey=key;assert.equal(toolCost(heavy),1);}
-for(const key of ['laboratorios','desertores']){state.bandKey=key;assert.equal(toolUpgradePrice(heavy),null);assert.equal(toolCost(heavy),0);}
+for(const key of ['civiles','pandilleros','sectarios','carroneros','ninos','laboratorios']){state.bandKey=key;assert.equal(toolCost(heavy),1);}
+state.bandKey='desertores';assert.equal(toolUpgradePrice(heavy),null);assert.equal(toolCost(heavy),0);
 state.bandKey='civiles';
 const rifle={id:'rifle',name:'Fusil .22'},pistol={id:'pistol',name:'Pistola Ligera'};
 const m={weapons:[heavy,rifle,pistol],gear:['Mira Telescópica','Silenciador'],gearTargets:['rifle','pistol']};

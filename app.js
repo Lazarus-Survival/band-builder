@@ -5,80 +5,7 @@ const state = {
   members: []
 };
 
-const AMMO_RULES = {
-  civiles: {
-    "Pistola .22": { cost: 1, size: 5 },
-    "Pistola Ligera": { cost: 2, size: 5 },
-    "Pistola Pesada": { cost: 3, size: 5 },
-    "Pistola de Clavos": { cost: 1, size: 10 },
-    "Escopeta Recortada": { cost: 4, size: 4 },
-    "Pistola Ametralladora": { cost: 2, size: 5 },
-    "Fusil .22": { cost: 1, size: 5 },
-    "Fusil de Caza": { cost: 4, size: 5 },
-    "Fusil Militar": { cost: 6, size: 4 },
-    "Fusil de Combate": { cost: 6, size: 4 },
-    "Escopeta": { cost: 4, size: 4 },
-    "Subfusil": { cost: 2, size: 5 },
-    "Carabina": { cost: 4, size: 5 },
-    "Fusil de Asalto": { cost: 4, size: 5 },
-    "Ametralladora Ligera": { cost: 4, size: 5 },
-    "Honda": { cost: 1, size: 5 },
-    "Arco de Caza": { cost: 1, size: 5 },
-    "Arco de Poleas/Ballesta": { cost: 3, size: 5 },
-    "Rifle Submarino": { cost: 3, size: 5 }
-  },
-  desertores: {
-    "Pistola Ligera": { cost: 2, size: 5 },
-    "Pistola Pesada": { cost: 3, size: 5 },
-    "Fusil Militar": { cost: 6, size: 4 },
-    "Fusil de Combate": { cost: 6, size: 4 },
-    "Subfusil": { cost: 2, size: 5 },
-    "Escopeta": { cost: 4, size: 4 },
-    "Escopeta Militar": { cost: 4, size: 4 },
-    "Carabina": { cost: 4, size: 5 },
-    "Fusil de Asalto": { cost: 4, size: 5 },
-    "Ametralladora Ligera": { cost: 4, size: 5 }
-  },
-  pandilleros: {
-    "Pistola .22": { cost: 1, size: 5 },
-    "Pistola Ligera": { cost: 2, size: 5 },
-    "Pistola Pesada": { cost: 3, size: 5 },
-    "Escopeta Recortada": { cost: 4, size: 4 },
-    "Pistola Ametralladora": { cost: 2, size: 5 },
-    "Escopeta": { cost: 4, size: 4 },
-    "Subfusil": { cost: 2, size: 5 },
-    "Carabina": { cost: 4, size: 5 },
-    "Fusil de Asalto": { cost: 4, size: 5 }
-  },
-  sectarios: {
-    "Pistola Ligera": { cost: 2, size: 5 },
-    "Pistola Pesada": { cost: 3, size: 5 },
-    "Escopeta Recortada": { cost: 4, size: 4 },
-    "Pistola Ametralladora": { cost: 2, size: 5 },
-    "Fusil de Caza": { cost: 4, size: 5 },
-    "Escopeta": { cost: 4, size: 4 },
-    "Subfusil": { cost: 2, size: 5 },
-    "Carabina": { cost: 4, size: 5 },
-    "Fusil de Asalto": { cost: 4, size: 5 },
-    "Ametralladora Ligera": { cost: 4, size: 5 }
-  },
-  laboratorios: {
-    "Pistola Ligera": { cost: 2, size: 5 },
-    "Pistola Ametralladora": { cost: 2, size: 5 },
-    "Subfusil": { cost: 2, size: 5 },
-    "Carabina": { cost: 4, size: 5 },
-    "Fusil de Asalto": { cost: 4, size: 5 },
-    "Lanzallamas": { cost: 4, size: 4 }
-  },
-  carroneros: {
-    "Pistola .22": { cost: 1, size: 5 },
-    "Pistola Ligera": { cost: 2, size: 5 },
-    "Honda": { cost: 1, size: 10 },
-    "Pistola de Clavos": { cost: 1, size: 10 },
-    "Escopeta Recortada": { cost: 4, size: 4 },
-    "Arco de Caza": { cost: 1, size: 10 }
-  }
-};
+const AMMO_RULES = Object.fromEntries(Object.entries(LAZARUS_DATA.bands).map(([key, value]) => [key, value.ammo]));
 
 const el = {
   bandName: document.querySelector("#bandName"),
@@ -98,7 +25,7 @@ function uid(){return globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.r
 function band(){return LAZARUS_DATA.bands[state.bandKey];}
 function firstProfile(){const entries=Object.entries(band().profiles);const leader=entries.find(([,p])=>p.leader);return leader?.[0]||entries[0][0];}
 function newWeapon(){return {id:uid(),name:"",ammoBlocks:1};}
-function addMember(profileName=null){state.members.push({id:uid(),name:"",profile:profileName||firstAvailableProfile()||firstProfile(),trait:"",flaw:"",armor:"",weapons:[newWeapon()],gear:[""]});render();}
+function addMember(profileName=null){state.members.push({id:uid(),name:"",profile:profileName||firstAvailableProfile()||firstProfile(),trait:"",flaw:"",armor:"",shield:"",weapons:[newWeapon()],gear:[""]});render();}
 function firstAvailableProfile(){for(const [name,profile] of Object.entries(band().profiles)){const count=state.members.filter(m=>m.profile===name).length;if(count<profile.max)return name;}return null;}
 function options(map,selected,emptyLabel="Ninguno"){const result=[`<option value="">${emptyLabel}</option>`];for(const [name,value] of Object.entries(map)){const cost=typeof value==="number"?value:value.cost;result.push(`<option value="${escapeHtml(name)}" ${name===selected?"selected":""}>${escapeHtml(name)}${cost?` · ${cost} pts`:""}</option>`);}return result.join("");}
 function profileOptions(selected){return Object.entries(band().profiles).map(([name,p])=>{const count=state.members.filter(m=>m.profile===name).length;const disabled=count>=p.max&&name!==selected;return `<option value="${escapeHtml(name)}" ${name===selected?"selected":""} ${disabled?"disabled":""}>${escapeHtml(name)} · ${p.cost} pts · máx. ${p.max}</option>`;}).join("");}
@@ -106,35 +33,91 @@ function ammoRule(weaponName){if(!weaponName)return null;return AMMO_RULES[state
 function normalizedAmmoBlocks(weapon){return Math.max(1,Number(weapon.ammoBlocks)||1);}
 function ammoCost(weapon){const rule=ammoRule(weapon.name);if(!rule)return 0;return(normalizedAmmoBlocks(weapon)-1)*rule.cost;}
 function ammoCount(weapon){const rule=ammoRule(weapon.name);return rule?normalizedAmmoBlocks(weapon)*rule.size:null;}
-function repeatedTraitCost(member){if(!member.trait)return 0;const hasFlamethrower=member.trait==="Pirómano"&&member.weapons.some(weapon=>weapon.name==="Lanzallamas");const base=hasFlamethrower?10:band().traits[member.trait]||0;const sameBefore=state.members.slice(0,state.members.indexOf(member)).filter(m=>m.trait===member.trait).length;return base*(2**sameBefore);}
+function fixedTrait(member){return null;}
+
+function traitRepeats(member){return fixedTrait(member)?0:state.members.slice(0,state.members.indexOf(member)).filter(m=>m.trait===member.trait&&!fixedTrait(m)).length;}
+function repeatedTraitCost(member){if(!member.trait||fixedTrait(member))return 0;const hasFlamethrower=member.trait==="Pirómano"&&member.weapons.some(weapon=>weapon.name==="Lanzallamas");const base=hasFlamethrower?10:band().traits[member.trait]||0;const sameBefore=traitRepeats(member);return base*(2**sameBefore);}
 function repeatedFlawValue(member){if(!member.flaw)return 0;const base=band().flaws[member.flaw]||0;const sameBefore=state.members.slice(0,state.members.indexOf(member)).filter(m=>m.flaw===member.flaw).length;return base/(2**sameBefore);}
-function memberCost(member){const b=band();const p=b.profiles[member.profile];if(!p)return 0;const weaponCost=member.weapons.reduce((sum,weapon)=>sum+(b.weapons[weapon.name]||0)+ammoCost(weapon)+toolCost(weapon),0);const gearCost=member.gear.reduce((sum,item)=>sum+(b.gear[item]||0),0);return p.cost+repeatedTraitCost(member)-repeatedFlawValue(member)+(b.armor[member.armor]||0)+weaponCost+gearCost;}
+function memberCost(member) {
+  const profile = band().profiles[member.profile];
+  if (!profile) return 0;
+  const weapons = member.weapons.reduce((sum, weapon) => sum + weaponPurchaseCost(member, weapon) + ammoCost(weapon) + toolCost(weapon), 0);
+  const gear = member.gear.reduce((sum, item, index) => sum + gearPurchaseCost(member, index), 0);
+  return profile.cost + repeatedTraitCost(member) - repeatedFlawValue(member) + weapons + gear + protectionCost(member, 'armor') + protectionCost(member, 'shield');
+}
+
 function totalCost(){return state.members.reduce((sum,m)=>sum+memberCost(m),0);}
-function effectiveStats(member){const p=band().profiles[member.profile];if(!p)return[];const stats=[...p.stats];if(member.trait==="Atleta"&&typeof stats[5]==="number")stats[5]+=2;if(member.trait==="Duro de Pelar"&&typeof stats[6]==="number")stats[6]+=1;if(member.flaw==="Bajo de Forma"&&typeof stats[5]==="number")stats[5]-=2;return stats;}
-function validate(){const errors=[];const b=band();const leaders=state.members.filter(m=>b.profiles[m.profile]?.leader).length;if(state.members.length<3)errors.push("La banda debe tener al menos 3 figuras.");if(leaders!==1)errors.push("La banda debe incluir exactamente un Líder.");if(totalCost()>state.limit)errors.push(`La banda supera el límite en ${formatPoints(totalCost()-state.limit)} puntos.`);for(const[profileName,profile]of Object.entries(b.profiles)){const count=state.members.filter(m=>m.profile===profileName).length;if(count>profile.max)errors.push(`Hay ${count} ${profileName}; el máximo es ${profile.max}.`);}state.members.forEach((m,index)=>{const p=b.profiles[m.profile];const label=m.name||`${m.profile} #${index+1}`;const filledWeapons=m.weapons.filter(w=>w.name);const weaponNames=filledWeapons.map(w=>w.name);const filledGear=m.gear.filter(Boolean);m.gear.forEach((item,i)=>{if(ATTACHMENT_WEAPONS[item]&&!attachmentWeapon(m,i))errors.push(`${label}: elige un arma compatible para ${item}.`);});if(!p?.dog&&!p?.special&&filledWeapons.length===0)errors.push(`${label} debe llevar al menos un arma.`);const twoHanded=filledWeapons.filter(w=>LAZARUS_DATA.weapons[w.name]?.hands===2);if(twoHanded.length>1)errors.push(`${label} no puede llevar más de un arma a dos manos.`);if(new Set(weaponNames).size!==weaponNames.length)errors.push(`${label} lleva dos veces la misma arma; revisa la restricción de equipo duplicado.`);if(new Set(filledGear).size!==filledGear.length)errors.push(`${label} lleva dos veces el mismo elemento de equipo.`);if(p?.child){for(const weapon of filledWeapons){const info=LAZARUS_DATA.weapons[weapon.name];if(info?.ranged&&info.hands===2&&!weapon.name.includes(".22"))errors.push(`${label}: un Niño solo puede usar armas de fuego a dos manos con .22 en el nombre.`);}}if(p?.leader&&m.flaw==="Miedoso")errors.push(`${label}: un Líder no puede tener Miedoso.`);if(m.flaw&&repeatedFlawValue(m)>=p.cost)errors.push(`${label}: el valor de su Desventaja no puede ser igual o superior al coste de la figura básica.`);});return errors;}
-function render(){renderBandControls();renderMembers();renderSummary();}
+function effectiveStats(member) {
+  const profile = band().profiles[member.profile];
+  if (!profile) return [];
+  const stats = [...profile.stats];
+  if (member.trait === 'Atleta' && typeof stats[5] === 'number') stats[5] += 2;
+  if (member.trait === 'Duro de Pelar' && typeof stats[6] === 'number') stats[6] += 1;
+  if (member.trait === 'Grande' && profile.dog) for (const index of [0, 2, 6]) stats[index] += 1;
+  if (member.flaw === 'Bajo de Forma' && typeof stats[5] === 'number') stats[5] -= 2;
+  if (member.flaw === 'Tuerto' && typeof stats[0] === 'number') stats[0] -= 2;
+  return stats;
+}
+
+function validate(){const errors=[];const b=band();const leaders=state.members.filter(m=>b.profiles[m.profile]?.leader).length;if(state.members.length<3)errors.push("La banda debe tener al menos 3 figuras.");if(leaders!==1)errors.push("La banda debe incluir exactamente un Líder.");if(totalCost()>state.limit)errors.push(`La banda supera el límite en ${formatPoints(totalCost()-state.limit)} puntos.`);for(const[profileName,profile]of Object.entries(b.profiles)){const count=state.members.filter(m=>m.profile===profileName).length;if(count>profile.max)errors.push(`Hay ${count} ${profileName}; el máximo es ${profile.max}.`);}state.members.forEach((m,index)=>{const p=b.profiles[m.profile];const label=m.name||`${m.profile} #${index+1}`;const filledWeapons=m.weapons.filter(w=>w.name);const weaponNames=filledWeapons.map(w=>w.name);const filledGear=m.gear.filter(Boolean);m.gear.forEach((item,i)=>{if(ATTACHMENT_WEAPONS[item]&&!attachmentWeapon(m,i))errors.push(`${label}: elige un arma compatible para ${item}.`);});if(!p?.dog&&!p?.special&&filledWeapons.length===0)errors.push(`${label} debe llevar al menos un arma.`);const twoHanded=filledWeapons.filter(w=>LAZARUS_DATA.weapons[w.name]?.hands===2);if(twoHanded.length>1)errors.push(`${label} no puede llevar más de un arma a dos manos.`);if(new Set(weaponNames.filter(name=>!LAZARUS_DATA.weapons[name]?.thrown)).size!==weaponNames.filter(name=>!LAZARUS_DATA.weapons[name]?.thrown).length)errors.push(`${label} lleva dos veces la misma arma; revisa la restricción de equipo duplicado.`);if(new Set(filledGear).size!==filledGear.length)errors.push(`${label} lleva dos veces el mismo elemento de equipo.`);if(p?.leader&&m.flaw==="Miedoso")errors.push(`${label}: un Líder no puede tener Miedoso.`);if(m.flaw&&repeatedFlawValue(m)>=p.cost)errors.push(`${label}: el valor de su Desventaja no puede ser igual o superior al coste de la figura básica.`);});return errors.concat(validateBandRules());}
+function allowedWeapon(member, name) {
+  const profile = band().profiles[member.profile];
+  if (profile?.beast) return false;
+  if (!Object.hasOwn(band().weapons, name)) return false;
+  return !profile?.child || band().childWeapons?.includes(name);
+}
+
+function normalizeProfile(member) {
+  const profile = band().profiles[member.profile];
+  if (!profile) return;
+  if (member.trait === 'Conductor experto' || member.trait === 'Ladrón de Coches') member.trait = 'Mecánico';
+  if (member.flaw === 'Adicción') member.flaw = 'Adicción I';
+  if (member.trait && (!Object.hasOwn(band().traits, member.trait) || !allowedTrait(member, member.trait))) member.trait = '';
+  if (member.flaw && (!Object.hasOwn(band().flaws, member.flaw) || !allowedFlaw(member, member.flaw))) member.flaw = '';
+  for (const weapon of member.weapons) {
+    if (weapon.name === 'Fusil de Combate') weapon.name = 'Fusil de Francotirador';
+    if (weapon.name === 'Fusil de Caza') weapon.name = 'Fusil Cerrojo';
+    if (weapon.name && !allowedWeapon(member, weapon.name)) {
+      clearWeaponLinks(member, weapon);
+      Object.assign(weapon, {name:'', ammoBlocks:1, tool:false});
+    }
+  }
+  for (const field of ['armor', 'shield']) {
+    if (member[field] && (!Object.hasOwn(band().armor, member[field]) || !allowedProtection(member, member[field]))) member[field] = '';
+  }
+  if (profile.includedArmor) member.armor = profile.includedArmor;
+  member.gear = member.gear.map(item => !profile.beast && !profile.child && Object.hasOwn(band().gear, item) ? item : '');
+}
+
+function render(){
+  state.members.forEach(normalizeProfile);
+  const ranks=Object.keys(band().profiles);
+  state.members.sort((a,b)=>ranks.indexOf(a.profile)-ranks.indexOf(b.profile));
+  renderBandControls();renderMembers();renderSummary();}
 function renderBandControls(){el.bandName.value=state.name;el.pointsLimit.value=state.limit;el.bandType.innerHTML=Object.entries(LAZARUS_DATA.bands).map(([key,b])=>`<option value="${key}" ${key===state.bandKey?"selected":""}>${escapeHtml(b.name)}</option>`).join("");const total=totalCost();el.pointsBadge.textContent=`${formatPoints(total)} / ${formatPoints(state.limit)} pts`;el.pointsBadge.classList.toggle("over",total>state.limit);}
 function renderMembers(){el.members.innerHTML="";state.members.forEach((member,index)=>{const node=el.template.content.cloneNode(true);const card=node.querySelector(".member-card");card.dataset.id=member.id;const p=band().profiles[member.profile];const nameInput=card.querySelector(".member-name");nameInput.value=member.name;nameInput.placeholder=`${member.profile} ${index+1}`;card.querySelector(".member-meta").textContent=`${member.profile}${p?.leader?" · Líder":""}`;card.querySelector(".member-cost").textContent=`${formatPoints(memberCost(member))} pts`;card.querySelector(".member-profile").innerHTML=profileOptions(member.profile);card.querySelector(".member-trait").innerHTML=options(band().traits,member.trait,"Sin dote");card.querySelector(".member-flaw").innerHTML=options(band().flaws,member.flaw,"Sin defecto");card.querySelector(".member-armor").innerHTML=options(band().armor,member.armor,"Sin protección");const stats=effectiveStats(member);card.querySelector(".stats").innerHTML=STAT_NAMES.map((stat,i)=>`<div class="stat"><b>${stats[i]??"-"}</b><span>${stat}</span></div>`).join("");renderWeaponRows(card,member);renderGearRows(card,member);card.querySelector(".rule-details").innerHTML=ruleDetails(member);bindMember(card,member);el.members.appendChild(node);});}
 function ammoOptions(weapon){const rule=ammoRule(weapon.name);if(!rule)return"";const selected=normalizedAmmoBlocks(weapon);const result=[];for(let blocks=1;blocks<=10;blocks+=1){const rounds=blocks*rule.size;const extra=(blocks-1)*rule.cost;const label=blocks===1?`${rounds} proyectiles · incluidos`:`${rounds} proyectiles · +${extra} pts`;result.push(`<option value="${blocks}" ${blocks===selected?"selected":""}>${label}</option>`);}return result.join("");}
-function weaponOptions(selected){
+function weaponOptions(selected,member){
   const groups=[
     {label:"Armas cuerpo a cuerpo a una mano",ranged:false,hands:1},
     {label:"Armas cuerpo a cuerpo a dos manos",ranged:false,hands:2},
     {label:"Armas a distancia a una mano",ranged:true,hands:1},
     {label:"Armas a distancia a dos manos",ranged:true,hands:2}
   ];
-  const entries=Object.entries(band().weapons).filter(([name])=>name);
+  const entries=Object.entries(band().weapons).filter(([name])=>name&&allowedWeapon(member,name));
   const result=['<option value="">Sin arma</option>'];
   for(const group of groups){
-    const weapons=entries.filter(([name])=>{const info=LAZARUS_DATA.weapons[name];return info&&!!info.ranged===group.ranged&&info.hands===group.hands;}).sort(([a],[b])=>a.localeCompare(b,"es",{sensitivity:"base"}));
+    const weapons=entries.filter(([name])=>{const info=LAZARUS_DATA.weapons[name];return info&&!info.thrown&&!!info.ranged===group.ranged&&info.hands===group.hands;}).sort(([a],[b])=>a.localeCompare(b,"es",{sensitivity:"base"}));
     if(!weapons.length)continue;
     result.push('<optgroup label="'+group.label+'">');
     for(const [name,cost] of weapons)result.push('<option value="'+escapeHtml(name)+'"'+(name===selected?' selected':'')+'>'+escapeHtml(name)+(cost?' · '+cost+' pts':'')+'</option>');
     result.push('</optgroup>');
   }
+  const thrown = entries.filter(([name]) => LAZARUS_DATA.weapons[name]?.thrown);
+  if (thrown.length) result.push('<optgroup label="Arrojadizas y explosivos">' + thrown.map(([name, cost]) => '<option value="' + escapeHtml(name) + '"' + (name === selected ? ' selected' : '') + '>' + escapeHtml(name) + ' · ' + cost + ' pts por unidad</option>').join('') + '</optgroup>');
   return result.join("");
 }
-function renderWeaponRows(card,member){ensureLoadoutIds(member);const container=card.querySelector(".weapon-list");container.innerHTML=member.weapons.map((weapon,index)=>{const rule=ammoRule(weapon.name);return `<div class="loadout-row weapon-row"><label>Arma ${index+1}<select class="weapon-select" data-index="${index}">${weaponOptions(weapon.name)}</select></label>${rule?`<label>Munición<select class="ammo-select" data-index="${index}">${ammoOptions(weapon)}</select></label>`:""}${toolUpgradePrice(weapon)!==null?`<label class="tool-option"><input type="checkbox" class="tool-upgrade" data-index="${index}" ${weapon.tool?"checked":""}>Herramienta (+${toolUpgradePrice(weapon)} pts)</label>`:""}${member.weapons.length>1?`<button type="button" class="remove-loadout remove-weapon" data-index="${index}" title="Eliminar arma">×</button>`:""}</div>`;}).join("");}
+function renderWeaponRows(card,member){const beast=!!band().profiles[member.profile]?.beast;card.querySelector(".add-weapon").hidden=beast;if(beast){card.querySelector(".weapon-list").innerHTML="";return;}ensureLoadoutIds(member);const container=card.querySelector(".weapon-list");container.innerHTML=member.weapons.map((weapon,index)=>{const rule=ammoRule(weapon.name);return `<div class="loadout-row weapon-row"><label>Arma ${index+1}<select class="weapon-select" data-index="${index}">${weaponOptions(weapon.name,member)}</select></label>${rule?`<label>Munición<select class="ammo-select" data-index="${index}">${ammoOptions(weapon)}</select></label>`:""}${toolUpgradePrice(weapon)!==null?`<label class="tool-option"><input type="checkbox" class="tool-upgrade" data-index="${index}" ${weapon.tool?"checked":""}>${weapon.name==="Arma a dos manos"?"Herramienta+":"Herramienta"} (+${toolUpgradePrice(weapon)} pts)</label>`:""}${member.weapons.length>1?`<button type="button" class="remove-loadout remove-weapon" data-index="${index}" title="Eliminar arma">×</button>`:""}</div>`;}).join("");}
 function renderGearRows(card,member){ensureLoadoutIds(member);const container=card.querySelector(".gear-list");container.innerHTML=member.gear.map((item,index)=>`<div class="loadout-row gear-row"><label>Equipo ${index+1}<select class="gear-select" data-index="${index}">${options(band().gear,item,"Sin equipo")}</select></label>${attachmentSelector(member,item,index)}${member.gear.length>1?`<button type="button" class="remove-loadout remove-gear" data-index="${index}" title="Eliminar equipo">×</button>`:""}</div>`).join("")+toolWeapons(member).map(w=>`<div class="locked-tool"><img src="assets/weapons/arma-cc-pesada.png" width="50" height="50" alt=""><div><b>Herramienta</b><p>${TOOL_TEXT}</p><small>Vinculada a Arma ${member.weapons.indexOf(w)+1} · +${toolCost(w)} pts</small></div></div>`).join("");}
 function ammoDescription(weapon){const rule=ammoRule(weapon.name);if(!rule)return"";const rounds=ammoCount(weapon);const extra=ammoCost(weapon);return `Munición: ${rounds} proyectiles${extra?` (+${extra} pts)`:" (incluidos)"}`;}
 function ruleDetails(member){const rows=[];if(member.trait)rows.push(`<div class="rule-line"><b>${escapeHtml(member.trait)}:</b> ${escapeHtml(LAZARUS_DATA.traits[member.trait]?.text||"Consulta el reglamento.")} <em>(${formatPoints(repeatedTraitCost(member))} pts)</em></div>`);if(member.flaw)rows.push(`<div class="rule-line"><b>${escapeHtml(member.flaw)}:</b> ${escapeHtml(LAZARUS_DATA.flaws[member.flaw]?.text||"Consulta el reglamento.")} <em>(-${formatPoints(repeatedFlawValue(member))} pts)</em></div>`);if(member.armor)rows.push(`<div class="rule-line"><b>${escapeHtml(member.armor)}:</b> ${escapeHtml(LAZARUS_DATA.armorText[member.armor]||"")}</div>`);for(const weapon of member.weapons.filter(w=>w.name)){const ammo=ammoDescription(weapon);rows.push(`<div class="rule-line"><b>${escapeHtml(weapon.name)}:</b> ${escapeHtml(weaponRuleText(weapon))}${ammo?` <span class="ammo-note">· ${escapeHtml(ammo)}</span>`:""}</div>`);}for(const item of member.gear.filter(Boolean)){rows.push(`<div class="rule-line"><b>${escapeHtml(item)}:</b> ${escapeHtml(LAZARUS_DATA.gearText[item]||"")}</div>`);}return rows.join("");}
